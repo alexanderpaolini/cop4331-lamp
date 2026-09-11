@@ -1,4 +1,3 @@
-````markdown
 # Player 1 + Player 2 Frontend
 
 Frontend for the **Player 1 + Player 2** Team Fortress 2 player matching application.
