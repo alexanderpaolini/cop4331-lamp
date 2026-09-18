@@ -1,111 +1,179 @@
-# Player 1 + Player 2 Frontend
+# Merc Mann Frontend
 
-Frontend for the **Player 1 + Player 2** Team Fortress 2 player matching application.
+Frontend for the **Merc Mann** contact management application.
 
-The goal of the application is to help TF2 players find other players who match their playstyle, schedule, platform, skill level, preferred classes, and team preferences.
+The frontend is built using **HTML, CSS, and JavaScript** and communicates with the PHP backend through the `/api` directory.
 
-The frontend uses:
-
-- HTML
-- CSS
-- JavaScript
-
-The frontend communicates with the backend through API requests using JavaScript `fetch()`.
-
-!!! I recommend downloading Live Server on your VS code so you can test locally without relying on the droplet just for the css and js, once we start incorporating API then we'll have to move out of it!!! :D
 ---
 
-# Current Structure
+## Frontend Structure
 
 ```text
 frontend/
-│
-├── index.html
+├── login.html
 ├── register.html
-├── dashboard.html
+├── mainpage.html
 │
 ├── css/
-│   └── style.css
+│   └── styles.css
 │
-├── js/
-│   ├── config.js
-│   ├── login.js
-│   └── register.js
-│
-└── README.md
+└── js/
+    ├── config.js
+    ├── login.js
+    └── signup.js
 ```
-
-More files can be added as additional features are implemented.
 
 ---
 
 # Pages
 
-## `index.html`
+## `login.html`
 
-Main landing and login page.
+The main login page for existing users.
 
-This page should contain:
+### User Inputs
 
-- Player 1 + Player 2 branding
-- Short description of the application
-- Username/login input
-- Password input
-- Login button
-- Link to the registration page
+The user enters:
 
-Login functionality is handled by:
+- Username
+- Password
+
+The form has the ID:
 
 ```text
-js/login.js
+loginForm
 ```
 
-After a successful login, the user should be redirected to:
+The input IDs are:
 
 ```text
-dashboard.html
+login
+password
 ```
+
+Any error returned by the API is displayed in:
+
+```text
+error
+```
+
+### Login Process
+
+When the user submits the form, `login.js` sends the username and password to:
+
+```text
+/api/Login.php
+```
+
+If the login is successful, the returned user information is stored in the browser using `localStorage`.
+
+The user is then redirected to:
+
+```text
+mainpage.html
+```
+
+If the login fails, the error returned by the API is displayed on the login page.
+
+The page also contains a link to `register.html` for users who do not already have an account.
 
 ---
 
 ## `register.html`
 
-Account registration and initial player profile page.
+The registration page allows new users to create an account.
 
-### Basic Account Information
+### User Inputs
 
-The registration form should collect:
+The user enters:
 
 - First name
 - Last name
-- Username/login
+- Username
 - Password
 
-### Player Profile Information
+The form has the ID:
 
-The profile may also contain:
+```text
+registerForm
+```
 
-- Display name
-- Steam/account username
-- Platform
-- Rank / skill level
-- Preferred role
-- Team preference
-- TF2 classes played
-- Usual play times
+The input IDs are:
 
-### Platforms
+```text
+firstName
+lastName
+login
+password
+```
 
-Possible platforms include:
+Any registration error is displayed in:
 
-- PC
-- PlayStation
-- Xbox
-- Nintendo
+```text
+error
+```
 
-### TF2 Classes
+### Registration Process
 
-Players can select the classes they normally play:
+When the form is submitted, `signup.js` sends the registration information to:
+
+```text
+/api/Register.php
+```
+
+If registration succeeds:
+
+1. A success message is displayed.
+2. The user clicks OK.
+3. The user is redirected to `login.html`.
+4. The user can log in using the newly created account.
+
+If registration fails, the error returned by the API is displayed on the page.
+
+The page also contains a link back to `login.html` for users who already have an account.
+
+---
+
+## `mainpage.html`
+
+The main application page displayed after a successful login.
+
+This page is intended to contain the user's TF2-themed contact manager.
+
+### Current Layout
+
+The page currently includes:
+
+- Merc Mann header
+- Logged-in user area
+- Log Out button
+- My Mercenaries section
+- Add Contact button
+- Contact search
+- TF2 class filter
+- Contact list
+- Empty contact list message
+- Add Contact modal/form
+
+### Contact Search
+
+The search input has the ID:
+
+```text
+search
+```
+
+It will be used to search the user's contacts by name.
+
+### Class Filter
+
+The class filter has the ID:
+
+```text
+classFilter
+```
+
+The currently available TF2 classes are:
 
 - Scout
 - Soldier
@@ -117,458 +185,476 @@ Players can select the classes they normally play:
 - Sniper
 - Spy
 
-### Team Preference
+Selecting a class will eventually filter the displayed contacts by that TF2 class.
 
-Possible team preferences:
+### Contact List
 
-- RED
-- BLU
-- No preference
-
-### Play Times
-
-Possible play-time preferences:
-
-- Morning
-- Afternoon
-- Evening
-- Late night
-
-Registration functionality is handled by:
+Contacts will be displayed inside:
 
 ```text
-js/register.js
+contactList
 ```
 
----
+If the user does not have any contacts, the page displays the empty state:
 
-## `dashboard.html`
+```text
+No mercenaries yet.
+Add your first contact to get started.
+```
 
-Main application page displayed after a successful login.
+### Add Contact
 
-The dashboard will eventually contain the player matching functionality.
+The Add Contact button has the ID:
 
-Planned features include:
+```text
+addContactButton
+```
 
-- View recommended players
-- Search for players
-- Filter players
-- View player profiles
-- Edit own profile
-- Add/connect with players
-- Logout
+The page also contains an Add Contact modal.
 
-### Player Search Filters
+The modal currently contains:
 
-Players may eventually be filtered using:
-
-- Platform
-- Rank
-- Preferred role
+- Contact name
 - TF2 class
-- Team preference
-- Play time
+- Add Contact button
+- Error message area
 
-Additional JavaScript files can be created as these features are implemented.
-
-For example:
-
-```text
-js/dashboard.js
-js/search.js
-js/profile.js
-```
-
----
-
-# CSS
-
-Shared frontend styling should go inside:
-
-```text
-css/style.css
-```
-
-The interface should follow the TF2-inspired design created for the project.
-
-General design direction:
-
-- RED and BLU team colors
-- Dark navigation bars
-- TF2-inspired typography
-- TF2-inspired panels and cards
-- Large, clear buttons
-- Simple and readable forms
-- Player cards for search and matching results
-
-Avoid placing large amounts of CSS directly inside HTML files.
+The actual contact API still needs to be connected before this functionality is complete.
 
 ---
 
 # JavaScript
 
-## `js/config.js`
+## `config.js`
 
-Contains shared frontend configuration values.
+Contains shared configuration used by the frontend JavaScript files.
 
-For example:
+Currently:
 
 ```javascript
-const API_URL = "/api";
+const API_BASE_URL = "/api";
 ```
 
-This allows all JavaScript files to use the same backend API location without hardcoding it multiple times.
+This allows API calls to use paths such as:
 
-Load `config.js` before JavaScript files that depend on it.
-
-Example for the login page:
-
-```html
-<script src="js/config.js"></script>
-<script src="js/login.js"></script>
+```javascript
+`${API_BASE_URL}/Login.php`
 ```
 
-Example for the registration page:
+instead of hardcoding the DigitalOcean server IP or domain throughout the project.
 
-```html
-<script src="js/config.js"></script>
-<script src="js/register.js"></script>
-```
-
----
-
-## `js/login.js`
-
-Handles login functionality.
-
-Responsibilities include:
-
-- Reading the username and password from the login form
-- Creating the login request
-- Sending the login information to the backend
-- Reading the backend response
-- Displaying login errors
-- Saving required user information after successful login
-- Redirecting the user to `dashboard.html`
-
----
-
-## `js/register.js`
-
-Handles account registration and profile creation.
-
-Responsibilities include:
-
-- Reading values from the registration form
-- Creating the registration request
-- Sending registration information to the backend
-- Reading the backend response
-- Displaying registration errors
-- Confirming successful account creation
-- Redirecting the user to the login page
-
----
-
-# Planned API
-
-The frontend communicates with the backend using JavaScript `fetch()`.
-
-The endpoints below represent the planned API structure.
-
-The exact endpoint names, request properties, and response formats may change depending on the final backend implementation.
-
----
-
-## Authentication
-
-### Create Account
+When the frontend and API are deployed on the same Apache server, `/api` points to:
 
 ```text
-POST /api/auth/signup
+/var/www/html/api/
 ```
 
-Used by:
+---
+
+## `login.js`
+
+Handles user login.
+
+### Responsibilities
+
+`login.js`:
+
+1. Waits for the `loginForm` to be submitted.
+2. Prevents the browser's default form submission.
+3. Reads the username and password.
+4. Sends the credentials to the Login API.
+5. Reads the JSON response.
+6. Displays an error if authentication fails.
+7. Stores user information if authentication succeeds.
+8. Redirects the user to `mainpage.html`.
+
+### Request
+
+The frontend sends a POST request to:
 
 ```text
-register.html
-js/register.js
+/api/Login.php
 ```
 
-Example request:
+with JSON in the following format:
 
 ```json
 {
-    "firstName": "John",
-    "lastName": "Doe",
-    "login": "EngineerMain",
+    "login": "username",
     "password": "password"
 }
 ```
 
----
+### Successful Response
 
-### Login
-
-```text
-POST /api/auth/login
-```
-
-Used by:
-
-```text
-index.html
-js/login.js
-```
-
-Example request:
+The current Login API returns data in this format:
 
 ```json
 {
-    "login": "EngineerMain",
-    "password": "password"
+    "message": "Login successful",
+    "user": {
+        "id": 1,
+        "firstName": "First",
+        "lastName": "Last",
+        "login": "username"
+    }
 }
 ```
 
----
+### Local Storage
 
-# User / Profile API
-
-## Get Player Profile
+After a successful login, the frontend currently stores:
 
 ```text
-GET /api/users/{id}
-```
-
-Returns information about a player.
-
-Example response:
-
-```json
-{
-    "id": 1,
-    "displayName": "EngineerMain",
-    "platform": "PC",
-    "rank": "Casual",
-    "preferredRole": "Support",
-    "teamPreference": "RED"
-}
-```
-
----
-
-## Update Player Profile
-
-```text
-PUT /api/users/{id}
-```
-
-Used when a player changes information such as:
-
-- Display name
-- Platform
-- Rank
-- Preferred role
-- Team preference
-- TF2 classes
-- Play times
-
----
-
-# Player Search API
-
-## Search Players
-
-```text
-GET /api/players/search
-```
-
-Used to find players that meet selected filters.
-
-Possible filters include:
-
-```text
-platform
-rank
-role
-class
-teamPreference
-playTime
+userId
+firstName
+lastName
+login
 ```
 
 Example:
 
-```text
-/api/players/search?platform=PC&class=Engineer
+```javascript
+localStorage.setItem("userId", data.user.id);
+localStorage.setItem("firstName", data.user.firstName);
+localStorage.setItem("lastName", data.user.lastName);
+localStorage.setItem("login", data.user.login);
 ```
 
-The backend should return matching player profiles that the frontend can display as player cards.
+This information can later be used by `mainpage.html`, such as displaying the logged-in user's first name or identifying which user's contacts should be requested.
 
 ---
 
-# Matching API
+## `signup.js`
 
-## Get Suggested Matches
+Handles new user registration.
+
+### Responsibilities
+
+`signup.js`:
+
+1. Waits for `registerForm` to be submitted.
+2. Prevents the browser's default form submission.
+3. Reads the registration fields.
+4. Sends the information to the Register API.
+5. Reads the JSON response.
+6. Displays an API error if registration fails.
+7. Displays a success message if registration succeeds.
+8. Redirects the user to `login.html`.
+
+### Request
+
+The frontend sends a POST request to:
 
 ```text
-GET /api/matches
+/api/Register.php
 ```
 
-Returns recommended players based on profile information.
+with JSON in the following format:
 
-Matching may eventually consider:
+```json
+{
+    "firstName": "First",
+    "lastName": "Last",
+    "login": "username",
+    "password": "password"
+}
+```
 
-- Platform compatibility
-- Shared TF2 classes
-- Complementary classes
-- Preferred roles
-- Similar skill level
-- Rank
-- Team preference
-- Overlapping play times
+### Successful Response
 
-The exact matching algorithm will be determined later.
+The current Register API returns data in this format:
 
---
-# Frontend / Backend Communication
+```json
+{
+    "message": "User registered successfully",
+    "user": {
+        "id": 1,
+        "firstName": "First",
+        "lastName": "Last",
+        "login": "username"
+    }
+}
+```
 
-The frontend should communicate with the backend using JavaScript `fetch()`.
+After a successful response, the frontend displays:
 
-Example login request:
+```text
+Account created successfully! You can now log in.
+```
+
+The user is then redirected to:
+
+```text
+login.html
+```
+
+### Registration Errors
+
+The frontend expects API errors using the `error` field.
+
+For example:
+
+```json
+{
+    "error": "Login is already in use"
+}
+```
+
+The error is displayed in the `error` element on the registration page.
+
+---
+
+# Current Application Flow
+
+```text
+                     ┌─────────────────┐
+                     │  register.html  │
+                     └────────┬────────┘
+                              │
+                         Create Account
+                              │
+                              ▼
+                     ┌─────────────────┐
+                     │  Register.php   │
+                     └────────┬────────┘
+                              │
+                           Success
+                              │
+                              ▼
+                     ┌─────────────────┐
+                     │   login.html    │
+                     └────────┬────────┘
+                              │
+                            Log In
+                              │
+                              ▼
+                     ┌─────────────────┐
+                     │    Login.php    │
+                     └────────┬────────┘
+                              │
+                           Success
+                              │
+                              ▼
+                     ┌─────────────────┐
+                     │  mainpage.html  │
+                     └─────────────────┘
+```
+
+---
+
+# Frontend/API Relationship
+
+The intended application structure on the DigitalOcean droplet is:
+
+```text
+/var/www/html/
+│
+├── login.html
+├── register.html
+├── mainpage.html
+│
+├── css/
+│   └── styles.css
+│
+├── js/
+│   ├── config.js
+│   ├── login.js
+│   ├── signup.js
+│   └── ...
+│
+└── api/
+    ├── Login.php
+    ├── Register.php
+    └── ...
+```
+
+The frontend does **not** connect directly to MySQL.
+
+The application follows this flow:
+
+```text
+HTML / CSS / JavaScript
+          |
+          | fetch()
+          v
+       PHP API
+          |
+          | SQL
+          v
+        MySQL
+```
+
+For example:
+
+```text
+login.html
+    |
+    v
+login.js
+    |
+    | POST
+    v
+/api/Login.php
+    |
+    v
+Users table
+```
+
+---
+
+# API Status Codes
+
+The current authentication APIs use HTTP status codes to indicate whether requests succeeded.
+
+### Login
+
+```text
+200 - Login successful
+400 - Login/password missing
+401 - Invalid login or password
+500 - Server/database error
+```
+
+### Registration
+
+```text
+201 - User registered successfully
+400 - Required registration information missing
+409 - Login is already in use
+500 - Server/database error
+```
+
+The JavaScript checks:
 
 ```javascript
-const response = await fetch(`${API_URL}/auth/login`, {
-    method: "POST",
-
-    headers: {
-        "Content-Type": "application/json"
-    },
-
-    body: JSON.stringify({
-        login: username,
-        password: password
-    })
-});
-
-const result = await response.json();
+response.ok
 ```
 
-The frontend and backend must agree on:
-
-- API endpoint
-- HTTP method
-- Request JSON format
-- Property names
-- Response JSON format
-- Error responses
-
-If the backend changes any of these, the frontend must be updated to match.
+to determine whether the request succeeded.
 
 ---
 
-# Project Organization
+# Styling
 
-Keep the different parts of the application separated.
-
-```text
-HTML       = Page structure
-
-CSS        = Appearance and styling
-
-JavaScript = Frontend behavior and API requests
-
-PHP / API  = Backend logic
-
-MySQL      = Database and stored information
-```
-
-The frontend should **not communicate directly with MySQL**.
-
-Communication should follow this structure:
+All pages currently use:
 
 ```text
-User
-  │
-  ▼
-Browser
-  │
-  ▼
-HTML / CSS / JavaScript
-  │
-  │ fetch()
-  ▼
-Backend API
-  │
-  ▼
-MySQL Database
+css/styles.css
 ```
+
+Shared classes have been added so the login and registration pages can use consistent styling.
+
+Current shared classes include:
+
+```text
+.auth-container
+.auth-card
+.auth-header
+.form-group
+.error-message
+.primary-button
+.auth-footer
+```
+
+The main page also includes classes for the dashboard, contact tools, contact list, and Add Contact modal.
+
+The visual design is still in progress and will use a TF2/Mann Co-inspired theme.
 
 ---
 
-# Application Structure
+# Current Development Status
 
-The planned application flow is:
+## Completed / Started
 
-```text
-                    PLAYER 1 + PLAYER 2
-                             │
-                             ▼
-                     LOGIN / REGISTER
-                             │
-                             ▼
-                         DASHBOARD
-                             │
-            ┌────────────────┼────────────────┐
-            │                │                │
-            ▼                ▼                ▼
-         PROFILE        FIND PLAYERS      MESSAGES
-            │                │
-            │                ▼
-            │             FILTER
-            │                │
-            │                ▼
-            └──────────► MATCHING
-                             │
-                             ▼
-                      PLAYER RESULTS
-                             │
-                             ▼
-                       VIEW PROFILE
-```
+- Login page structure
+- Registration page structure
+- Main page structure
+- Login JavaScript
+- Registration JavaScript
+- Shared API configuration
+- Login API request format
+- Registration API request format
+- Successful login redirect
+- Successful registration message
+- Successful registration redirect
+- API error display
+- User information stored after login
+- TF2 class options
+- Main contact page layout
+- Add Contact modal structure
+
+## Still To Do
+
+- Complete frontend styling
+- Connect the contact API to `mainpage.html`
+- Create contact JavaScript
+- Load the logged-in user's contacts
+- Add new contacts
+- Delete contacts
+- Search contacts
+- Filter contacts by TF2 class
+- Implement logout
+- Display logged-in user's name
+- Add admin functionality when the admin API is ready
+- Determine admin status after login
+- Test all frontend/API integration
+- Deploy the current frontend to the team DigitalOcean droplet
+- Deploy the current Contacts API to the droplet
+- Replace the old Colors App deployment
+- Test the application through Apache
 
 ---
 
-# Matching Concept
+# Important Notes for Backend Integration
 
-The purpose of the matching system is to recommend TF2 players who are likely to play well together.
+The frontend currently expects these authentication endpoints:
 
-At a high level:
+```text
+/api/Login.php
+/api/Register.php
+```
 
-### 1. Filter Players
+If endpoint names or locations are changed, update either the JavaScript calls or `config.js` accordingly.
 
-Filter possible players using basic requirements such as:
+The frontend currently expects API errors in this format:
 
-- Platform
-- Rank
-- Role
-- Team preference
-- Play time
+```json
+{
+    "error": "Error message"
+}
+```
 
-### 2. Calculate Compatibility
+Login and registration success responses should include a `user` object.
 
-Compare player profiles using information such as:
+The current Login API does **not** return admin status.
 
-- Shared or complementary TF2 classes
-- Similar skill level
-- Preferred roles
-- Overlapping play schedules
-- Platform
-- Team preferences
+If the application needs to distinguish between normal users and administrators, the Login API will eventually need to return that information so the frontend can determine which interface should be displayed.
 
-### 3. Recommend Players
+---
 
-Players with higher compatibility can be shown first in the search results.
+# Deployment Notes
 
-### 4. Connect
+The production frontend and API are intended to run from the same Apache server.
 
-Users can then view profiles onnect with recommended players. Kind of like Facebook. If extra time allows we should consider the idea of a News Board with empty messages just for show.
+Because of this, `config.js` currently uses:
 
+```javascript
+const API_BASE_URL = "/api";
+```
+
+This means a request such as:
+
+```javascript
+fetch(`${API_BASE_URL}/Login.php`)
+```
+
+will request:
+
+```text
+/api/Login.php
+```
+
+from the same server that served the frontend.
+
+This avoids hardcoding the DigitalOcean IP address and makes the frontend easier to move between servers.
