@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Merc Mann | Admin</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="main-header">
+
+        <div class="header-brand">
+            <h1>MERC MANN</h1>
+            <p>Administration</p>
+        </div>
+
+        <div class="user-menu">
+            <span id="welcomeUser">Administrator</span>
+            <button id="logoutButton" type="button">
+                Log Out
+            </button>
+        </div>
+
+    </header>
+
+    <main class="dashboard-container">
+
+        <div class="dashboard-header">
+
+            <div>
+                <h2>User Management</h2>
+                <p>Manage registered Merc Mann users.</p>
+            </div>
+
+        </div>
+
+        <div class="contact-tools">
+
+            <div class="search-container">
+
+                <label for="userSearch">
+                    Search Users
+                </label>
+
+                <input
+                    type="text"
+                    id="userSearch"
+                    placeholder="Search by name or username"
+                >
+
+            </div>
+
+        </div>
+
+        <section class="contacts-section">
+
+            <div id="userList">
+
+                <p id="loadingMessage">
+                    Loading users...
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="js/config.js"></script>
+    <script src="js/admin.js"></script>
+
+</body>
+
+</html>

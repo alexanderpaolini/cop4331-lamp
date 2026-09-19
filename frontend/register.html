@@ -1,4 +1,3 @@
-<!-- We will be using this page for our LAMP project -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,83 +5,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Merc Mann | Register</title>
+    <title>Merc Mann | Create Account</title>
 
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
     <main class="auth-container">
 
-        <div class="auth-card">
+        <section class="auth-card">
 
-            <!-- App title / logo -->
             <div class="auth-header">
                 <h1>MERC MANN</h1>
-                <p>Mercenary Contact Management</p>
+                <p>Create Your Account</p>
             </div>
-
-            <h2>Create Account</h2>
 
             <form id="registerForm">
 
+                <!-- First Name -->
                 <div class="form-group">
                     <label for="firstName">First Name</label>
+
                     <input
                         type="text"
                         id="firstName"
                         name="firstName"
-                        placeholder="Enter your first name"
-                        autocomplete="given-name"
+                        placeholder="First name"
                         required
                     >
                 </div>
 
+
+                <!-- Last Name -->
                 <div class="form-group">
                     <label for="lastName">Last Name</label>
+
                     <input
                         type="text"
                         id="lastName"
                         name="lastName"
-                        placeholder="Enter your last name"
-                        autocomplete="family-name"
+                        placeholder="Last name"
                         required
                     >
                 </div>
 
+
+                <!-- Username -->
                 <div class="form-group">
                     <label for="login">Username</label>
+
                     <input
                         type="text"
                         id="login"
                         name="login"
-                        placeholder="Choose a username"
-                        autocomplete="username"
+                        placeholder="Username"
                         required
                     >
                 </div>
 
+
+                <!-- Password -->
                 <div class="form-group">
                     <label for="password">Password</label>
+
                     <input
                         type="password"
                         id="password"
                         name="password"
-                        placeholder="Choose a password"
-                        autocomplete="new-password"
+                        placeholder="Password"
                         required
                     >
                 </div>
 
-                <!-- API error messages appear here -->
-                <p id="error" class="error-message"></p>
 
-                <button type="submit" class="primary-button">
+                <!-- Account Type -->
+                <div class="form-group">
+                    <label for="accountType">Account Type</label>
+
+                    <select
+                        id="accountType"
+                        name="accountType"
+                    >
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+
+                <!-- Only shown when Admin is selected -->
+                <div
+                    class="form-group"
+                    id="adminCodeGroup"
+                    style="display: none;"
+                >
+                    <label for="adminCode">Admin Code</label>
+
+                    <input
+                        type="password"
+                        id="adminCode"
+                        name="adminCode"
+                        placeholder="Enter admin registration code"
+                    >
+                </div>
+
+
+                <!-- API errors appear here -->
+                <p id="error"></p>
+
+
+                <button type="submit">
                     Create Account
                 </button>
 
             </form>
+
 
             <div class="auth-footer">
                 <p>
@@ -91,9 +128,10 @@
                 </p>
             </div>
 
-        </div>
+        </section>
 
     </main>
+
 
     <script src="js/config.js"></script>
     <script src="js/signup.js"></script>

@@ -4,7 +4,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     const login = document.getElementById("login").value.trim();
     const password = document.getElementById("password").value;
 
-    const response = await fetch(`${API_BASE_URL}/Login.php`, {
+    const response = await fetch(`${API_BASE_URL}/auth/login.php`, {
         method: "POST",
 
         headers: {
@@ -26,9 +26,15 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         localStorage.setItem("firstName", data.user.firstName);
         localStorage.setItem("lastName", data.user.lastName);
         localStorage.setItem("login", data.user.login);
+	localStorage.setItem("isAdmin", data.user.isAdmin);
 
+	if (data.user.isAdmin === true) {
         // Send user to main page
-        window.location.href = "mainpage.html";
+            window.location.href = "admin.html";
+	} else {
+	    window.location.href = "mainpage.html";
+	}
+
 
     } else {
 

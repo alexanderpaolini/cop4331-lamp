@@ -19,7 +19,7 @@ if ($login === '' || $password === '') {
 
 try {
     $statement = contactsDb()->prepare(
-        'SELECT ID, FirstName, LastName, Login, Password FROM Users WHERE Login = :login LIMIT 1'
+        'SELECT ID, FirstName, LastName, Login, Password, IsAdmin FROM Users WHERE Login = :login LIMIT 1'
     );
     $statement->execute(['login' => $login]);
     $user = $statement->fetch();
@@ -38,5 +38,6 @@ apiResponse(200, [
         'firstName' => $user['FirstName'],
         'lastName' => $user['LastName'],
         'login' => $user['Login'],
+	'IsAdmin' => (bool) $user['IsAdmin'],
     ],
 ]);

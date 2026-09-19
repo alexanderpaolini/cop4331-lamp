@@ -5,8 +5,11 @@ document.getElementById("registerForm").addEventListener("submit", async functio
     const lastName = document.getElementById("lastName").value.trim();
     const login = document.getElementById("login").value.trim();
     const password = document.getElementById("password").value;
+    const accountType = document.getElementById("accountType").value;
+    const adminCode = document.getElementById("adminCode").value;
 
-    const response = await fetch(`${API_BASE_URL}/Register.php`, {
+
+    const response = await fetch(`${API_BASE_URL}/auth/signup.php`, {
         method: "POST",
 
         headers: {
@@ -17,7 +20,9 @@ document.getElementById("registerForm").addEventListener("submit", async functio
             firstName: firstName,
             lastName: lastName,
             login: login,
-            password: password
+            password: password,
+	    accountType: accountType,
+	    adminCode: adminCode
         })
     });
 
@@ -32,5 +37,17 @@ document.getElementById("registerForm").addEventListener("submit", async functio
     } else {
 
         document.getElementById("error").textContent = data.error;
+    }
+});
+
+// Show Admin Code field only when Admin is selected
+document.getElementById("accountType").addEventListener("change", function() {
+    const adminCodeGroup = document.getElementById("adminCodeGroup");
+
+    if (this.value === "admin") {
+        adminCodeGroup.style.display = "block";
+    } else {
+        adminCodeGroup.style.display = "none";
+        document.getElementById("adminCode").value = "";
     }
 });
