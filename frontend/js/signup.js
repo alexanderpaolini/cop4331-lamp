@@ -5,6 +5,11 @@ document.getElementById("registerForm").addEventListener("submit", async functio
     const lastName = document.getElementById("lastName").value.trim();
     const login = document.getElementById("login").value.trim();
     const password = document.getElementById("password").value;
+
+    // Mercenary information
+    const mercenaryClass = document.getElementById("mercenaryClass").value;
+    const mercenaryRank = Number(document.getElementById("mercenaryRank").value);
+
     const accountType = document.getElementById("accountType").value;
     const adminCode = document.getElementById("adminCode").value;
 
@@ -21,8 +26,10 @@ document.getElementById("registerForm").addEventListener("submit", async functio
             lastName: lastName,
             login: login,
             password: password,
-	    accountType: accountType,
-	    adminCode: adminCode
+            mercenaryClass: mercenaryClass,
+            mercenaryRank: mercenaryRank,
+            accountType: accountType,
+            adminCode: adminCode
         })
     });
 
@@ -39,6 +46,7 @@ document.getElementById("registerForm").addEventListener("submit", async functio
         document.getElementById("error").textContent = data.error;
     }
 });
+
 
 // Show Admin Code field only when Admin is selected
 document.getElementById("accountType").addEventListener("change", function() {

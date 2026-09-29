@@ -1,0 +1,50 @@
+/* GENERAL */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Verdana, Geneva, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #FFFFFF;
+    background-color: #343434;
+}
+
+h1,
+h2,
+h3,
+th,
+strong {
+    font-weight: 700;
+}
+
+button,
+input,
+select {
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+button {
+    background-color: #e96528;
+    color: #FFFFFF;
+    border: 2px solid #000000;
+    border-radius: 18px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+button:hover {
+    filter: brightness(1.1);
+}
+
+.logo {
+    height: 85px;
+    width: auto;
+}
+
+.clearfix {
+    clear: both;
+}

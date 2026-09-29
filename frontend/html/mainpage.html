@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Merc Mann | My Mercenaries</title>
+
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/mainpage.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="main-header">
+
+        <div class="header-brand">
+
+            <img
+                src="/images/logo.png"
+                alt="MERC MANN Logo"
+                class="logo"
+            >
+
+            <div class="brand-text">
+                <h1>MERC MANN</h1>
+                <p>Mercenary Contact Management</p>
+            </div>
+
+        </div>
+
+
+        <div class="header-actions">
+
+            <button
+                id="findMercenaryButton"
+                class="primary-button"
+                type="button"
+            >
+                + Find Mercenary
+            </button>
+
+            <button
+                id="addManualMercenaryButton"
+                class="primary-button"
+                type="button"
+            >
+                + Add Mercenary
+            </button>
+
+            <button
+                id="logoutButton"
+                class="logout-button"
+                type="button"
+            >
+                Log Out
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <main class="dashboard-container">
+
+
+        <!-- Welcome -->
+        <div class="welcome-section">
+            <span id="welcomeUser">Welcome</span>
+        </div>
+
+
+        <!-- Game Status -->
+        <section class="game-status-section">
+
+            <div class="game-status-header">
+
+                <div>
+                    <h2>Looking for a Game</h2>
+                    <p>
+                        Let your mercenaries know when you're ready to play.
+                    </p>
+                </div>
+
+                <label class="switch">
+
+                    <input
+                        type="checkbox"
+                        id="lookingForToggle"
+                    >
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+
+            <div
+                id="gameModeGroup"
+                class="game-mode-row"
+                style="display: none;"
+            >
+
+                <div>
+                    <strong>Game Mode</strong>
+                    <p>What do you want to play?</p>
+                </div>
+
+                <select id="gameMode">
+
+                    <option value="">
+                        Select a game mode
+                    </option>
+
+                    <option value="Payload">
+                        Payload
+                    </option>
+
+                    <option value="King of the Hill">
+                        King of the Hill
+                    </option>
+
+                    <option value="Control Point">
+                        Control Point
+                    </option>
+
+                    <option value="Capture the Flag">
+                        Capture the Flag
+                    </option>
+
+                </select>
+
+            </div>
+
+            <p
+                id="statusError"
+                class="error-message"
+            ></p>
+
+        </section>
+
+
+        <!-- Find Registered Mercenary -->
+        <section
+            id="mercenarySearchSection"
+            class="mercenary-search-section"
+            style="display: none;"
+        >
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Find Mercenary</h2>
+                    <p>
+                        Search for another player by username.
+                    </p>
+                </div>
+
+                <button
+                    id="closeSearchButton"
+                    class="close-search-button"
+                    type="button"
+                    aria-label="Close search"
+                >
+                    &times;
+                </button>
+
+            </div>
+
+
+            <div class="search-container">
+
+                <label for="mercenarySearch">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="mercenarySearch"
+                    placeholder="Search by username"
+                    autocomplete="off"
+                >
+
+            </div>
+
+            <div id="searchResults"></div>
+
+            <p
+                id="searchError"
+                class="error-message"
+            ></p>
+
+        </section>
+
+
+        <!-- Create / Edit Manual Mercenary -->
+        <section
+            id="manualMercenarySection"
+            class="mercenary-search-section manual-mercenary-section"
+            style="display: none;"
+        >
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2 id="manualMercenaryTitle">
+                        Add Mercenary
+                    </h2>
+
+                    <p id="manualMercenaryDescription">
+                        Create your own mercenary contact.
+                    </p>
+
+                </div>
+
+                <button
+                    id="closeManualMercenaryButton"
+                    class="close-search-button"
+                    type="button"
+                    aria-label="Close mercenary form"
+                >
+                    &times;
+                </button>
+
+            </div>
+
+
+            <form id="manualMercenaryForm">
+
+                <div class="manual-contact-grid">
+
+
+                    <div class="form-group">
+
+                        <label for="manualFirstName">
+                            First Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="manualFirstName"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="manualLastName">
+                            Last Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="manualLastName"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="manualLogin">
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="manualLogin"
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="manualNickname">
+                            Nickname
+                        </label>
+
+                        <input
+                            type="text"
+                            id="manualNickname"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="manualEmail">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="manualEmail"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="manualPhone">
+                            Phone
+                        </label>
+
+                        <input
+                            type="text"
+                            id="manualPhone"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full-width">
+
+                        <label for="manualAddress">
+                            Address
+                        </label>
+
+                        <input
+                            type="text"
+                            id="manualAddress"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="manualClass">
+                            Mercenary Class
+                        </label>
+
+                        <select id="manualClass">
+
+                            <option value="">None</option>
+                            <option value="Scout">Scout</option>
+                            <option value="Soldier">Soldier</option>
+                            <option value="Pyro">Pyro</option>
+                            <option value="Demoman">Demoman</option>
+                            <option value="Heavy">Heavy</option>
+                            <option value="Engineer">Engineer</option>
+                            <option value="Medic">Medic</option>
+                            <option value="Sniper">Sniper</option>
+                            <option value="Spy">Spy</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="manualRank">
+                            Mercenary Rank
+                        </label>
+
+                        <select id="manualRank">
+
+                            <option value="">
+                                Select your rank
+                            </option>
+
+                            <option value="1">
+                                Rank 1 - Mercenary I
+                            </option>
+
+                            <option value="2">
+                                Rank 2 - Mercenary II
+                            </option>
+
+                            <option value="3">
+                                Rank 3 - Mercenary III
+                            </option>
+
+                            <option value="4">
+                                Rank 4 - Contract Killer I
+                            </option>
+
+                            <option value="5">
+                                Rank 5 - Contract Killer II
+                            </option>
+
+                            <option value="6">
+                                Rank 6 - Contract Killer III
+                            </option>
+
+                            <option value="7">
+                                Rank 7 - Executioner I
+                            </option>
+
+                            <option value="8">
+                                Rank 8 - Executioner II
+                            </option>
+
+                            <option value="9">
+                                Rank 9 - Executioner III
+                            </option>
+
+                            <option value="10">
+                                Rank 10 - Expert Assassin I
+                            </option>
+
+                            <option value="11">
+                                Rank 11 - Expert Assassin II
+                            </option>
+
+                            <option value="12">
+                                Rank 12 - Expert Assassin III
+                            </option>
+
+                            <option value="13">
+                                Rank 13 - Death Merchant
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="manualGameMode">
+                            Game Mode
+                        </label>
+
+                        <select id="manualGameMode">
+
+                            <option value="">None</option>
+
+                            <option value="Payload">
+                                Payload
+                            </option>
+
+                            <option value="King of the Hill">
+                                King of the Hill
+                            </option>
+
+                            <option value="Control Point">
+                                Control Point
+                            </option>
+
+                            <option value="Capture the Flag">
+                                Capture the Flag
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label class="manual-looking-label">
+
+                            <input
+                                type="checkbox"
+                                id="manualLookingFor"
+                            >
+
+                            Looking for a Game
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="form-group full-width">
+
+                        <label for="manualNote">
+                            Note
+                        </label>
+
+                        <textarea
+                            id="manualNote"
+                            rows="4"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <div class="manual-form-actions">
+
+                    <button
+                        id="manualMercenarySubmitButton"
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Add Mercenary
+                    </button>
+
+                    <button
+                        id="cancelManualMercenaryButton"
+                        type="button"
+                        class="logout-button"
+                    >
+                        Cancel
+                    </button>
+
+                </div>
+
+
+                <p
+                    id="manualMercenaryError"
+                    class="error-message"
+                ></p>
+
+            </form>
+
+        </section>
+
+
+        <!-- My Mercenaries -->
+        <section class="mercenaries-section">
+
+            <div class="section-title">
+
+                <h2>
+                    My Mercenaries
+                </h2>
+
+                <p>
+                    Manage your mercenary contacts.
+                </p>
+
+            </div>
+
+
+            <!-- Search My Mercenaries -->
+            <div class="search-container mercenary-list-search">
+
+                <label for="mercenaryListSearch">
+                    Search My Mercenaries
+                </label>
+
+                <input
+                    type="text"
+                    id="mercenaryListSearch"
+                    placeholder="Search by username, name, nickname, or class"
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table class="mercenary-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Username</th>
+                            <th>Name</th>
+                            <th>Class</th>
+                            <th>Rank</th>
+                            <th>Status</th>
+                            <th>Game Mode</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="mercenaryList">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div
+                id="emptyMessage"
+                class="empty-message"
+            >
+
+                <h3>
+                    No mercenaries yet.
+                </h3>
+
+                <p>
+                    Find a registered mercenary or create your own contact.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="../js/config.js"></script>
+    <script src="../js/contacts.js"></script>
+
+</body>
+
+</html>

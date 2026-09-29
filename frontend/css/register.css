@@ -1,0 +1,180 @@
+/* =========================
+   REGISTER PAGE
+   ========================= */
+
+body:has(#registerForm) {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 40px 20px;
+
+    text-align: center;
+}
+
+
+/* Logo */
+
+body:has(#registerForm) > .logo {
+    display: block;
+
+    height: 100px;
+    width: auto;
+
+    margin: 0 auto 15px;
+}
+
+
+/* Title */
+
+body:has(#registerForm) > h1 {
+    margin: 0 0 20px;
+
+    font-size: 2.3rem;
+}
+
+
+/* Create Account title */
+
+body:has(#registerForm) > h2 {
+    margin: 0 0 20px;
+
+    font-size: 1.8rem;
+}
+
+
+/* Register form */
+
+#registerForm {
+    width: 560px;
+    max-width: 90vw;
+
+    margin: 0 auto;
+    padding: 30px;
+
+    background-color: #3A3A3A;
+
+    border: 2px solid #FFFFFF;
+    border-radius: 14px;
+
+    text-align: left;
+    align-self: center;
+}
+
+
+/* Form groups */
+
+#registerForm .form-group {
+    margin-bottom: 18px;
+}
+
+
+/* Labels */
+
+#registerForm label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-weight: 700;
+}
+
+
+/* Inputs and dropdowns */
+
+#registerForm input,
+#registerForm select {
+    display: block;
+
+    width: 100%;
+
+    margin: 0;
+    padding: 12px 14px;
+
+    background-color: #2C2C2C;
+    color: #FFFFFF;
+
+    border: 1px solid #777777;
+    border-radius: 6px;
+
+    font-size: 1rem;
+}
+
+
+/* Placeholder text */
+
+#registerForm input::placeholder {
+    color: #888888;
+}
+
+
+/* Input focus */
+
+#registerForm input:focus,
+#registerForm select:focus {
+    outline: 2px solid #e96528;
+    border-color: #e96528;
+}
+
+
+/* Register button */
+
+#registerForm button[type="submit"] {
+    width: 100%;
+
+    margin-top: 10px;
+    padding: 12px 20px;
+}
+
+
+/* Admin code section */
+
+#adminCodeGroup {
+    margin-top: 18px;
+}
+
+
+/* Error message */
+
+#registerForm .error-message {
+    margin: 15px 0 0;
+
+    text-align: center;
+}
+
+
+/* Login link */
+
+body:has(#registerForm) > p:last-of-type {
+    width: 100%;
+
+    margin: 20px auto 0;
+
+    text-align: center;
+}
+
+body:has(#registerForm) > p:last-of-type a {
+    color: #e96528;
+
+    font-weight: 700;
+}
+
+body:has(#registerForm) > p:last-of-type a:hover {
+    color: #FFFFFF;
+}
+
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 800px) {
+
+    #registerForm {
+        width: 92%;
+        padding: 22px;
+    }
+}

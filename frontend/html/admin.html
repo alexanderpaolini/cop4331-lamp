@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Merc Mann | Admin</title>
+
+    <link rel="stylesheet" href="/css/general.css">
+    <link rel="stylesheet" href="/css/mainpage.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+
+    <!-- MAIN HEADER -->
+    <header class="main-header">
+
+        <div class="header-brand">
+
+            <img
+                src="/images/logo.png"
+                alt="MERC MANN Logo"
+                class="logo"
+            >
+
+            <div class="brand-text">
+                <h1>MERC MANN</h1>
+                <p>Administration</p>
+            </div>
+
+        </div>
+
+
+        <div class="header-actions">
+
+            <span id="welcomeUser">
+                Administrator
+            </span>
+
+            <button
+                id="logoutButton"
+                class="logout-button"
+                type="button"
+            >
+                Log Out
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ADMIN DASHBOARD -->
+    <main class="dashboard-container">
+
+
+        <!-- PAGE TITLE -->
+        <div class="section-title admin-title-row">
+
+            <div>
+                <h2>User Management</h2>
+                <p>
+                    Manage registered Merc Mann users and administrators.
+                </p>
+            </div>
+
+            <button
+                id="openCreateAdminButton"
+                class="primary-button"
+                type="button"
+            >
+                + Create Admin
+            </button>
+
+        </div>
+
+
+        <!-- CREATE ADMIN -->
+        <section
+            id="createAdminSection"
+            class="admin-form-section"
+            style="display: none;"
+        >
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Create Administrator</h2>
+                    <p>
+                        Create a new administrator account.
+                    </p>
+                </div>
+
+                <button
+                    id="closeCreateAdminButton"
+                    class="close-search-button"
+                    type="button"
+                >
+                    &times;
+                </button>
+
+            </div>
+
+
+            <form id="createAdminForm">
+
+                <div class="admin-form-grid">
+
+                    <div class="form-group">
+
+                        <label for="adminFirstName">
+                            First Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="adminFirstName"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="adminLastName">
+                            Last Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="adminLastName"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="adminLogin">
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="adminLogin"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="adminPassword">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="adminPassword"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-form-actions">
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Create Admin
+                    </button>
+
+                    <button
+                        id="cancelCreateAdminButton"
+                        type="button"
+                        class="logout-button"
+                    >
+                        Cancel
+                    </button>
+
+                </div>
+
+
+                <p
+                    id="createAdminError"
+                    class="error-message"
+                ></p>
+
+            </form>
+
+        </section>
+
+
+        <!-- CHANGE PASSWORD -->
+        <section
+            id="passwordSection"
+            class="admin-form-section"
+            style="display: none;"
+        >
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Change Password</h2>
+
+                    <p id="passwordUserLabel">
+                        Update user password.
+                    </p>
+                </div>
+
+                <button
+                    id="closePasswordButton"
+                    class="close-search-button"
+                    type="button"
+                >
+                    &times;
+                </button>
+
+            </div>
+
+
+            <form id="passwordForm">
+
+                <input
+                    type="hidden"
+                    id="passwordUserId"
+                >
+
+
+                <div class="admin-form-grid">
+
+                    <div class="form-group">
+
+                        <label for="newPassword">
+                            New Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="newPassword"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="confirmPassword">
+                            Confirm Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-form-actions">
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Save Password
+                    </button>
+
+                    <button
+                        id="cancelPasswordButton"
+                        type="button"
+                        class="logout-button"
+                    >
+                        Cancel
+                    </button>
+
+                </div>
+
+
+                <p
+                    id="passwordError"
+                    class="error-message"
+                ></p>
+
+            </form>
+
+        </section>
+
+
+        <!-- USER ENTRIES -->
+        <section
+            id="entriesSection"
+            class="admin-form-section"
+            style="display: none;"
+        >
+
+            <div class="section-header">
+
+                <div>
+                    <h2 id="entriesTitle">
+                        User Entries
+                    </h2>
+
+                    <p>
+                        Mercenaries and contacts belonging to this user.
+                    </p>
+                </div>
+
+                <button
+                    id="closeEntriesButton"
+                    class="close-search-button"
+                    type="button"
+                >
+                    &times;
+                </button>
+
+            </div>
+
+
+            <div id="entriesList">
+
+                <p>
+                    Select a user to view entries.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- USER SEARCH -->
+        <div class="search-container">
+
+            <label for="userSearch">
+                Search Users
+            </label>
+
+            <input
+                type="text"
+                id="userSearch"
+                placeholder="Search by name or username"
+            >
+
+        </div>
+
+
+        <!-- USER LIST -->
+        <section class="contacts-section">
+
+            <div id="userList">
+
+                <p id="loadingMessage">
+                    Loading users...
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="/js/config.js"></script>
+    <script src="/js/admin.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Merc Mann | Create Account</title>
+
+    <link rel="stylesheet" href="/css/general.css">
+    <link rel="stylesheet" href="/css/register.css">
+</head>
+
+<body>
+
+    <img
+        src="/images/logo.png"
+        alt="MERC MANN Logo"
+        class="logo"
+    >
+
+    <h1>MERC MANN</h1>
+
+    <h2>Create Your Account</h2>
+
+    <form id="registerForm">
+
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+
+            <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                placeholder="First name"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+
+            <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                placeholder="Last name"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="login">Username</label>
+
+            <input
+                type="text"
+                id="login"
+                name="login"
+                placeholder="Username"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Password"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+
+            <label for="mercenaryClass">
+                Mercenary Class
+            </label>
+
+            <select
+                id="mercenaryClass"
+                name="mercenaryClass"
+                required
+            >
+                <option value="" disabled selected>
+                    Select your class
+                </option>
+
+                <option value="Scout">Scout</option>
+                <option value="Soldier">Soldier</option>
+                <option value="Pyro">Pyro</option>
+                <option value="Demoman">Demoman</option>
+                <option value="Heavy">Heavy</option>
+                <option value="Engineer">Engineer</option>
+                <option value="Medic">Medic</option>
+                <option value="Sniper">Sniper</option>
+                <option value="Spy">Spy</option>
+            </select>
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="mercenaryRank">
+                Mercenary Rank
+            </label>
+
+            <select
+                id="mercenaryRank"
+                name="mercenaryRank"
+                required
+            >
+                <option value="" disabled selected>
+                    Select your rank
+                </option>
+
+                <option value="1">Rank 1 - Mercenary I</option>
+                <option value="2">Rank 2 - Mercenary II</option>
+                <option value="3">Rank 3 - Mercenary III</option>
+
+                <option value="4">Rank 4 - Contract Killer I</option>
+                <option value="5">Rank 5 - Contract Killer II</option>
+                <option value="6">Rank 6 - Contract Killer III</option>
+
+                <option value="7">Rank 7 - Executioner I</option>
+                <option value="8">Rank 8 - Executioner II</option>
+                <option value="9">Rank 9 - Executioner III</option>
+
+                <option value="10">Rank 10 - Expert Assassin I</option>
+                <option value="11">Rank 11 - Expert Assassin II</option>
+                <option value="12">Rank 12 - Expert Assassin III</option>
+
+                <option value="13">Rank 13 - Death Merchant</option>
+            </select>
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="accountType">
+                Account Type
+            </label>
+
+            <select
+                id="accountType"
+                name="accountType"
+            >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+            </select>
+
+        </div>
+
+        <div
+            class="form-group"
+            id="adminCodeGroup"
+            style="display: none;"
+        >
+
+            <label for="adminCode">
+                Admin Code
+            </label>
+
+            <input
+                type="password"
+                id="adminCode"
+                name="adminCode"
+                placeholder="Enter admin registration code"
+            >
+
+        </div>
+
+        <p
+            id="error"
+            class="error-message"
+        ></p>
+
+        <button type="submit">
+            Create Account
+        </button>
+
+    </form>
+
+    <p>
+        Already have an account?
+        <a href="login.html">Log In</a>
+    </p>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/signup.js"></script>
+
+</body>
+
+</html>
