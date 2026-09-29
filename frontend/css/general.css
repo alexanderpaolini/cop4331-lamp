@@ -1,50 +1,1046 @@
-/* GENERAL */
+/* =====================================================
+   MERC MANN - GENERAL STYLES
+   TF2 INSPIRED UI
+   ===================================================== */
+
+
+/* =====================================================
+   FONT
+   ===================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap");
+
+
+/* =====================================================
+   TF2 COLOR PALETTE
+   ===================================================== */
+
+:root {
+
+    /* BLU */
+
+    --blu-dark: #395c78;
+    --blu: #5b7a8c;
+    --blu-light: #768a88;
+
+
+    /* CONCRETE */
+
+    --concrete: #6b6a65;
+
+
+    /* BROWN */
+
+    --brown-dark: #34302d;
+    --brown: #462d26;
+    --brown-light: #6a4535;
+
+
+    /* RED */
+
+    --red-dark: #913a1e;
+    --red: #bd3b3b;
+    --red-deep: #9d312f;
+
+
+    /* ORANGE */
+
+    --orange: #f08149;
+    --orange-light: #ef9849;
+
+
+    /* LIGHT */
+
+    --peach: #f5ad87;
+    --tan-light: #f6b98a;
+    --cream: #f5e7de;
+    --tan: #c1a18a;
+    --beige: #dabdab;
+
+
+    /* FONTS */
+
+    --font-display:
+        "TF2 Build",
+        "Oswald",
+        Impact,
+        sans-serif;
+
+    --font-body:
+        "TF2 Secondary",
+        "Trebuchet MS",
+        Verdana,
+        Geneva,
+        sans-serif;
+}
+
+
+/* =====================================================
+   RESET
+   ===================================================== */
 
 * {
     box-sizing: border-box;
 }
 
+html {
+    min-height: 100%;
+}
+
 body {
-    font-family: Verdana, Geneva, sans-serif;
+    min-height: 100vh;
+
     margin: 0;
     padding: 0;
-    color: #FFFFFF;
-    background-color: #343434;
+
+    font-family: var(--font-body);
+
+    color: var(--cream);
+
+    background-image:
+        radial-gradient(
+            ellipse at center,
+            rgba(52, 48, 45, 0.04) 0%,
+            rgba(52, 48, 45, 0.12) 35%,
+            rgba(52, 48, 45, 0.40) 70%,
+            rgba(52, 48, 45, 0.90) 100%
+        ),
+        url("/images/concrete.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
+
+
+/* =====================================================
+   TEXT
+   ===================================================== */
+
+p,
+label,
+input,
+select,
+textarea,
+td,
+span {
+    font-family: var(--font-body);
+}
+
+p {
+    line-height: 1.5;
+}
+
+label {
+    color: var(--cream);
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   HEADINGS
+   ===================================================== */
 
 h1,
 h2,
 h3,
+h4,
 th,
 strong {
+    font-family: var(--font-display);
+
     font-weight: 700;
+
+    letter-spacing: 0.04em;
 }
+
+h1 {
+    color: var(--cream);
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.07em;
+
+    text-shadow:
+        2px 2px 0
+        var(--brown-dark);
+}
+
+h2 {
+    color: var(--tan-light);
+
+    text-transform: uppercase;
+}
+
+h3 {
+    color: var(--beige);
+}
+
+
+/* =====================================================
+   LINKS
+   ===================================================== */
+
+a {
+    color: var(--orange-light);
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        color 0.15s ease,
+        text-shadow 0.15s ease;
+}
+
+a:hover {
+    color: var(--cream);
+
+    text-shadow:
+        0 0 6px
+        rgba(240, 129, 73, 0.60);
+}
+
+
+/* =====================================================
+   MAIN CONTAINERS
+   ===================================================== */
+
+.panel,
+.card {
+    color: var(--cream);
+
+    background-color:
+        rgba(70, 45, 38, 0.94);
+
+    border:
+        2px solid
+        var(--brown-light);
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 5px 16px
+        rgba(0, 0, 0, 0.38);
+}
+
+
+/* =====================================================
+   INPUTS
+   ===================================================== */
 
 button,
 input,
-select {
-    font-family: Verdana, Geneva, sans-serif;
+select,
+textarea {
+    font-size: 1rem;
 }
 
-button {
-    background-color: #e96528;
-    color: #FFFFFF;
-    border: 2px solid #000000;
-    border-radius: 18px;
-    padding: 10px 20px;
+input,
+select,
+textarea {
+    width: 100%;
+
+    padding: 11px 13px;
+
+    font-family: var(--font-body);
+
+    color: var(--cream);
+
+    background-color: var(--brown-dark);
+
+    border:
+        2px solid
+        var(--brown-light);
+
+    border-radius: 6px;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        background-color 0.15s ease;
+}
+
+select option {
+    color: var(--cream);
+
+    background-color: var(--brown-dark);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--tan);
+
+    opacity: 0.85;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+
+    background-color: var(--brown);
+
+    border-color: var(--orange);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(240, 129, 73, 0.25);
+}
+
+
+/* =====================================================
+   PRIMARY BUTTON
+   ===================================================== */
+
+button,
+.primary-button {
+    padding: 11px 22px;
+
+    font-family: var(--font-display);
+
+    font-size: 1rem;
+    font-weight: 700;
+
+    letter-spacing: 0.05em;
+
+    text-transform: uppercase;
+
+    color: var(--cream);
+
+    background-color: var(--red-dark);
+
+    border:
+        2px solid
+        var(--brown-dark);
+
+    border-radius: 6px;
+
+    box-shadow:
+        0 3px 0
+        var(--brown-dark);
+
     cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.12s ease,
+        box-shadow 0.12s ease;
+}
+
+button:hover,
+.primary-button:hover {
+    background-color: var(--red);
+
+    border-color: var(--peach);
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 4px 0
+        var(--brown-dark);
+}
+
+button:active,
+.primary-button:active {
+    background-color: var(--red-deep);
+
+    transform:
+        translateY(2px);
+
+    box-shadow:
+        0 1px 0
+        var(--brown-dark);
+}
+
+button:focus-visible,
+.primary-button:focus-visible {
+    outline:
+        3px solid
+        var(--orange-light);
+
+    outline-offset: 3px;
+}
+
+
+/* =====================================================
+   SECONDARY / BLU BUTTON
+   ===================================================== */
+
+.secondary-button {
+    color: var(--cream);
+
+    background-color: var(--blu-dark);
+
+    border-color: var(--brown-dark);
+
+    box-shadow:
+        0 3px 0
+        var(--brown-dark);
+}
+
+.secondary-button:hover {
+    background-color: var(--blu);
+
+    border-color: var(--blu-light);
+}
+
+
+/* =====================================================
+   LOGOUT BUTTON
+   ===================================================== */
+
+.logout-button {
+    color: var(--brown-dark);
+
+    background-color: var(--orange);
+
+    border:
+        2px solid
+        var(--brown-dark);
+
+    box-shadow:
+        0 3px 0
+        var(--brown-dark);
+}
+
+.logout-button:hover {
+    color: var(--brown-dark);
+
+    background-color: var(--orange-light);
+
+    border-color: var(--tan-light);
+}
+
+
+/* =====================================================
+   DANGER / REMOVE BUTTON
+   ===================================================== */
+
+.danger-button,
+.remove-button,
+.delete-btn {
+    color: var(--cream);
+
+    background-color: var(--red-deep);
+
+    border:
+        2px solid
+        var(--brown-dark);
+}
+
+.danger-button:hover,
+.remove-button:hover,
+.delete-btn:hover {
+    background-color: var(--red);
+
+    border-color: var(--peach);
+}
+
+
+/* =====================================================
+   EDIT / INFO BUTTON
+   ===================================================== */
+
+.edit-btn,
+.edit-contact-button,
+.info-button {
+    color: var(--cream);
+
+    background-color: var(--blu-dark);
+
+    border:
+        2px solid
+        var(--brown-dark);
+}
+
+.edit-btn:hover,
+.edit-contact-button:hover,
+.info-button:hover {
+    background-color: var(--blu);
+
+    border-color: var(--blu-light);
+}
+
+
+/* =====================================================
+   LOGO
+   ===================================================== */
+
+.logo {
+    height: 95px;
+    width: auto;
+
+    object-fit: contain;
+
+    filter:
+        drop-shadow(
+            0 4px 4px
+            rgba(0, 0, 0, 0.48)
+        );
+}
+
+
+/* =====================================================
+   TABLES
+   ===================================================== */
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    color: var(--cream);
+
+    background-color:
+        rgba(70, 45, 38, 0.96);
+}
+
+th {
+    padding: 12px;
+
+    color: var(--cream);
+
+    background-color: var(--blu-dark);
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.04em;
+
+    border-bottom:
+        2px solid
+        var(--blu-light);
+}
+
+td {
+    padding: 11px 12px;
+
+    border-bottom:
+        1px solid
+        var(--brown-light);
+}
+
+tbody tr {
+    transition:
+        background-color 0.15s ease;
+}
+
+tbody tr:hover {
+    background-color:
+        rgba(57, 92, 120, 0.48);
+}
+
+
+/* =====================================================
+   STATUS
+   ===================================================== */
+
+.status {
+    display: inline-block;
+
+    padding: 5px 10px;
+
+    border-radius: 15px;
+
     font-weight: 700;
 }
 
-button:hover {
-    filter: brightness(1.1);
+.status.online {
+    color: var(--cream);
+
+    background-color: var(--red-dark);
+
+    border:
+        1px solid
+        var(--red);
 }
 
-.logo {
-    height: 85px;
-    width: auto;
+.status.offline {
+    color: var(--cream);
+
+    background-color: var(--brown-light);
+
+    border:
+        1px solid
+        var(--tan);
+}
+
+
+/* =====================================================
+   TOGGLE
+   ===================================================== */
+
+.slider {
+    background-color:
+        var(--brown-light) !important;
+
+    border-color:
+        var(--brown-dark) !important;
+}
+
+.slider::before {
+    background-color:
+        var(--cream) !important;
+}
+
+.switch input:checked + .slider {
+    background-color:
+        var(--blu-dark) !important;
+}
+
+
+/* =====================================================
+   CLASS AVATAR
+   ===================================================== */
+
+.class-avatar {
+    width: 56px;
+    height: 56px;
+
+    flex-shrink: 0;
+
+    object-fit: cover;
+    object-position: center 15%;
+
+    border-radius: 50%;
+
+    background-color: var(--brown-dark);
+
+    border:
+        3px solid
+        var(--tan-light);
+
+    box-shadow:
+        0 3px 8px
+        rgba(0, 0, 0, 0.45);
+}
+
+
+/* =====================================================
+   ALERTS
+   ===================================================== */
+
+.error-message {
+    color: var(--peach);
+
+    font-weight: 700;
+}
+
+.success-message {
+    color: var(--beige);
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   EMPTY MESSAGES
+   ===================================================== */
+
+.empty-message {
+    color: var(--beige);
+}
+
+.empty-message h3 {
+    color: var(--cream);
+}
+
+
+/* =====================================================
+   TEXT HELPERS
+   ===================================================== */
+
+.accent {
+    color: var(--orange);
+}
+
+.blu-text {
+    color: var(--blu-light);
+}
+
+.red-text {
+    color: var(--peach);
+}
+
+
+/* =====================================================
+   SELECTION
+   ===================================================== */
+
+::selection {
+    color: var(--cream);
+
+    background-color: var(--red-dark);
+}
+
+
+/* =====================================================
+   SCROLLBAR
+   ===================================================== */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--brown-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--blu-dark);
+
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--blu);
+}
+
+
+/* =====================================================
+   PAGE-SPECIFIC COLOR OVERRIDES
+
+   These override the old gray values still sitting
+   inside login.css, register.css, mainpage.css,
+   and admin.css.
+   ===================================================== */
+
+
+/* LOGIN + REGISTER */
+
+#loginForm,
+#registerForm {
+    background-color:
+        rgba(70, 45, 38, 0.96) !important;
+
+    color:
+        var(--cream) !important;
+
+    border:
+        2px solid
+        var(--brown-light) !important;
+
+    box-shadow:
+        0 8px 25px
+        rgba(0, 0, 0, 0.42) !important;
+}
+
+#loginForm input,
+#registerForm input,
+#registerForm select {
+    color:
+        var(--cream) !important;
+
+    background-color:
+        var(--brown-dark) !important;
+
+    border:
+        2px solid
+        var(--brown-light) !important;
+}
+
+#loginForm input:focus,
+#registerForm input:focus,
+#registerForm select:focus {
+    outline:
+        none !important;
+
+    border-color:
+        var(--orange) !important;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(240, 129, 73, 0.25) !important;
+}
+
+
+/* MAIN HEADER */
+
+.main-header {
+    background-color:
+        rgba(52, 48, 45, 0.88) !important;
+
+    border-bottom:
+        2px solid
+        var(--brown-light) !important;
+
+    box-shadow:
+        0 3px 12px
+        rgba(0, 0, 0, 0.28) !important;
+}
+
+.brand-text p,
+.welcome-section,
+.section-title p,
+.section-header p,
+.game-status-header p,
+.game-mode-row p {
+    color:
+        var(--beige) !important;
+}
+
+
+/* MAIN PAGE PANELS */
+
+.game-status-section,
+.mercenary-search-section,
+.manual-mercenary-section,
+.admin-form-section {
+    background-color:
+        rgba(70, 45, 38, 0.95) !important;
+
+    border:
+        2px solid
+        var(--brown-light) !important;
+
+    box-shadow:
+        0 5px 16px
+        rgba(0, 0, 0, 0.34) !important;
+}
+
+
+/* SEARCH RESULT CARDS */
+
+.contact-card {
+    background-color:
+        rgba(57, 92, 120, 0.94) !important;
+
+    border:
+        2px solid
+        var(--blu-light) !important;
+
+    box-shadow:
+        0 4px 12px
+        rgba(0, 0, 0, 0.30) !important;
+}
+
+.contact-card:hover {
+    background-color:
+        rgba(91, 122, 140, 0.96) !important;
+}
+
+.contact-info p {
+    color:
+        var(--cream) !important;
+}
+
+
+/* SEARCH + FORM INPUT OVERRIDES */
+
+.search-container input,
+.game-mode-row select,
+.manual-contact-grid input,
+.manual-contact-grid select,
+.manual-contact-grid textarea,
+.admin-form-grid input,
+.admin-form-grid select,
+.admin-form-grid textarea {
+    color:
+        var(--cream) !important;
+
+    background-color:
+        var(--brown-dark) !important;
+
+    border:
+        2px solid
+        var(--brown-light) !important;
+}
+
+.search-container input:focus,
+.game-mode-row select:focus,
+.manual-contact-grid input:focus,
+.manual-contact-grid select:focus,
+.manual-contact-grid textarea:focus,
+.admin-form-grid input:focus,
+.admin-form-grid select:focus,
+.admin-form-grid textarea:focus {
+    outline:
+        none !important;
+
+    border-color:
+        var(--orange) !important;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(240, 129, 73, 0.25) !important;
+}
+
+
+/* TABLE CONTAINER */
+
+.table-container,
+#userList,
+#entriesList {
+    border-color:
+        var(--brown-light) !important;
+}
+
+
+/* TABLES */
+
+.mercenary-table,
+.user-table {
+    color:
+        var(--cream) !important;
+
+    background-color:
+        rgba(70, 45, 38, 0.96) !important;
+
+    border-color:
+        var(--brown-light) !important;
+}
+
+.mercenary-table th,
+.user-table th {
+    color:
+        var(--cream) !important;
+
+    background-color:
+        var(--blu-dark) !important;
+
+    border-bottom:
+        2px solid
+        var(--blu-light) !important;
+}
+
+.mercenary-table td,
+.user-table td {
+    border-bottom:
+        1px solid
+        var(--brown-light) !important;
+}
+
+.mercenary-table tbody tr:hover,
+.user-table tbody tr:hover {
+    background-color:
+        rgba(57, 92, 120, 0.52) !important;
+}
+
+
+/* CLOSE BUTTON */
+
+.close-search-button {
+    color:
+        var(--cream) !important;
+
+    background-color:
+        var(--brown-dark) !important;
+
+    border:
+        2px solid
+        var(--tan) !important;
+}
+
+.close-search-button:hover {
+    color:
+        var(--cream) !important;
+
+    background-color:
+        var(--red-dark) !important;
+
+    border-color:
+        var(--peach) !important;
+}
+
+
+/* LOGOUT OVERRIDE */
+
+.logout-button {
+    color:
+        var(--brown-dark) !important;
+
+    background-color:
+        var(--orange) !important;
+
+    border-color:
+        var(--brown-dark) !important;
+}
+
+.logout-button:hover {
+    background-color:
+        var(--orange-light) !important;
+}
+
+
+/* REMOVE BUTTON OVERRIDE */
+
+.remove-button,
+.delete-btn {
+    color:
+        var(--cream) !important;
+
+    background-color:
+        var(--red-deep) !important;
+
+    border-color:
+        var(--brown-dark) !important;
+}
+
+.remove-button:hover,
+.delete-btn:hover {
+    background-color:
+        var(--red) !important;
+
+    border-color:
+        var(--peach) !important;
+}
+
+
+/* EDIT / INFO */
+
+.edit-btn,
+.edit-contact-button,
+.info-button {
+    color:
+        var(--cream) !important;
+
+    background-color:
+        var(--blu-dark) !important;
+
+    border-color:
+        var(--brown-dark) !important;
+}
+
+.edit-btn:hover,
+.edit-contact-button:hover,
+.info-button:hover {
+    background-color:
+        var(--blu) !important;
+
+    border-color:
+        var(--blu-light) !important;
+}
+
+
+/* =====================================================
+   UTILITY
+   ===================================================== */
+
+.hidden {
+    display: none !important;
 }
 
 .clearfix {
     clear: both;
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 800px) {
+
+    body {
+        background-attachment: scroll;
+    }
+
+    .class-avatar {
+        width: 46px;
+        height: 46px;
+    }
 }

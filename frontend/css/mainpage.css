@@ -166,7 +166,61 @@
 .switch input:checked + .slider::before {
     transform: translateX(30px);
 }
+/* =========================
+   CLASS AVATAR
+   ========================= */
 
+.contact-row,
+.search-result-row,
+.mercenary-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    padding: 12px;
+    margin-bottom: 10px;
+
+    background-color: rgba(52, 48, 45, 0.92);
+    border: 2px solid #6b6a65;
+    border-radius: 10px;
+}
+
+.class-avatar {
+    width: 56px;
+    height: 56px;
+
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+
+    border: 2px solid #c1a18a;
+    background-color: #34302d;
+
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.contact-info,
+.search-result-info,
+.mercenary-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.contact-name,
+.search-result-name,
+.mercenary-name {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #f5e7de;
+}
+
+.contact-meta,
+.search-result-meta,
+.mercenary-meta {
+    font-size: 0.92rem;
+    color: #c1a18a;
+}
 
 /* GAME MODE */
 
@@ -606,5 +660,98 @@
     #registerForm {
         width: 92%;
         padding: 22px;
+    }
+}
+
+/* =====================================================
+   MERCENARY CLASS AVATARS
+   ===================================================== */
+
+.class-avatar {
+    width: 58px;
+    height: 58px;
+
+    flex-shrink: 0;
+
+    object-fit: cover;
+    object-position: center 15%;
+
+    border-radius: 50%;
+
+    background-color: var(--brown-dark);
+
+    border: 3px solid var(--tan);
+
+    box-shadow:
+        0 3px 8px
+        rgba(0, 0, 0, 0.4);
+}
+
+
+/* Search result cards */
+
+.contact-card {
+    justify-content: flex-start;
+}
+
+.contact-card .contact-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.contact-card .class-avatar {
+    width: 64px;
+    height: 64px;
+}
+
+
+/* My Mercenaries table */
+
+.mercenary-identity {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    min-width: 180px;
+}
+
+.mercenary-identity .class-avatar {
+    width: 48px;
+    height: 48px;
+}
+
+.mercenary-identity-text {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.mercenary-identity-text strong {
+    color: var(--cream);
+}
+
+.mercenary-identity-text span {
+    color: var(--tan);
+
+    font-size: 0.82rem;
+}
+
+
+/* Small screens */
+
+@media (max-width: 800px) {
+
+    .contact-card .class-avatar {
+        width: 52px;
+        height: 52px;
+    }
+
+    .mercenary-identity .class-avatar {
+        width: 42px;
+        height: 42px;
     }
 }

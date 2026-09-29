@@ -1,149 +1,173 @@
-// Merc Mann Mercenary Dashboard
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    // =====================================================
-    // LOGGED-IN USER
-    // =====================================================
-
-    const userId =
-        localStorage.getItem("userId");
-
-    const firstName =
-        localStorage.getItem("firstName");
+// =====================================================
+// MERC MANN - MERCENARY DASHBOARD
+// =====================================================
 
 
-    if (!userId) {
-        window.location.href = "login.html";
-        return;
+// =====================================================
+// CLASS IMAGES
+// =====================================================
+
+function getClassImage(mercenaryClass) {
+
+    const classMap = {
+        scout: "/images/scout.png",
+        soldier: "/images/soldier.png",
+        pyro: "/images/pyro.png",
+        demoman: "/images/demoman.png",
+        heavy: "/images/heavy.png",
+        engineer: "/images/engineer.png",
+        medic: "/images/medic.png",
+        sniper: "/images/sniper.png",
+        spy: "/images/spy.png"
+    };
+
+    if (!mercenaryClass) {
+        return "/images/logo.png";
     }
 
+    const normalizedClass =
+        String(mercenaryClass)
+            .trim()
+            .toLowerCase();
 
-    // =====================================================
-    // WELCOME
-    // =====================================================
-
-    const welcomeUser =
-        document.getElementById("welcomeUser");
-
-    if (welcomeUser) {
-        welcomeUser.textContent =
-            `Welcome, ${firstName || ""}`;
-    }
+    return (
+        classMap[normalizedClass] ||
+        "/images/logo.png"
+    );
+}
 
 
-    // =====================================================
-    // LOGOUT
-    // =====================================================
+// =====================================================
+// PAGE SETUP
+// =====================================================
 
-    const logoutButton =
-        document.getElementById("logoutButton");
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    if (logoutButton) {
+        const userId =
+            localStorage.getItem("userId");
 
-        logoutButton.addEventListener(
-            "click",
-            function () {
-
-                localStorage.clear();
-
-                window.location.href =
-                    "login.html";
-            }
-        );
-    }
+        const firstName =
+            localStorage.getItem("firstName");
 
 
-    // =====================================================
-    // GAME STATUS
-    // =====================================================
+        // User must be logged in
+        if (!userId) {
 
-    const lookingForToggle =
-        document.getElementById(
-            "lookingForToggle"
-        );
+            window.location.href =
+                "login.html";
 
-    const gameModeGroup =
-        document.getElementById(
-            "gameModeGroup"
-        );
-
-    const gameMode =
-        document.getElementById(
-            "gameMode"
-        );
-
-    const statusError =
-        document.getElementById(
-            "statusError"
-        );
+            return;
+        }
 
 
-    async function loadGameStatus() {
+        // =================================================
+        // WELCOME
+        // =================================================
 
-        try {
-
-            const response = await fetch(
-                `${API_BASE_URL}/mercenaries/status.php?userId=${userId}`
+        const welcomeUser =
+            document.getElementById(
+                "welcomeUser"
             );
 
-            const data =
-                await response.json();
+        if (welcomeUser) {
 
-
-            if (!response.ok) {
-
-                statusError.textContent =
-                    data.error ||
-                    "Unable to load game status.";
-
-                return;
-            }
-
-
-            lookingForToggle.checked =
-                Number(data.lookingFor) === 1 ||
-                data.lookingFor === true;
-
-
-            if (lookingForToggle.checked) {
-
-                gameModeGroup.style.display =
-                    "flex";
-
-                gameMode.value =
-                    data.gameMode || "";
-
-            } else {
-
-                gameModeGroup.style.display =
-                    "none";
-
-                gameMode.value = "";
-            }
-
-        } catch (error) {
-
-            console.error(error);
-
-            statusError.textContent =
-                "Unable to load game status.";
+            welcomeUser.textContent =
+                `Welcome, ${firstName || ""}`;
         }
-    }
 
 
-    if (lookingForToggle) {
+        // =================================================
+        // LOGOUT
+        // =================================================
 
-        lookingForToggle.addEventListener(
-            "change",
-            function () {
+        const logoutButton =
+            document.getElementById(
+                "logoutButton"
+            );
 
-                statusError.textContent = "";
+        if (logoutButton) {
 
-                if (lookingForToggle.checked) {
+            logoutButton.addEventListener(
+                "click",
+                function () {
+
+                    localStorage.clear();
+
+                    window.location.href =
+                        "login.html";
+                }
+            );
+        }
+
+
+        // =================================================
+        // GAME STATUS
+        // =================================================
+
+        const lookingForToggle =
+            document.getElementById(
+                "lookingForToggle"
+            );
+
+        const gameModeGroup =
+            document.getElementById(
+                "gameModeGroup"
+            );
+
+        const gameMode =
+            document.getElementById(
+                "gameMode"
+            );
+
+        const statusError =
+            document.getElementById(
+                "statusError"
+            );
+
+
+        async function loadGameStatus() {
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE_URL}/mercenaries/status.php?userId=${userId}`
+                    );
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    statusError.textContent =
+                        data.error ||
+                        "Unable to load game status.";
+
+                    return;
+                }
+
+
+                const looking =
+                    Number(
+                        data.lookingFor
+                    ) === 1 ||
+                    data.lookingFor === true;
+
+
+                lookingForToggle.checked =
+                    looking;
+
+
+                if (looking) {
 
                     gameModeGroup.style.display =
                         "flex";
+
+                    gameMode.value =
+                        data.gameMode || "";
 
                 } else {
 
@@ -151,811 +175,31 @@ document.addEventListener("DOMContentLoaded", function () {
                         "none";
 
                     gameMode.value = "";
-
-                    updateGameStatus(false, "");
                 }
-            }
-        );
-    }
 
 
-    if (gameMode) {
+            } catch (error) {
 
-        gameMode.addEventListener(
-            "change",
-            function () {
-
-                if (gameMode.value !== "") {
-
-                    updateGameStatus(
-                        true,
-                        gameMode.value
-                    );
-                }
-            }
-        );
-    }
-
-
-    async function updateGameStatus(
-        lookingFor,
-        selectedGameMode
-    ) {
-
-        try {
-
-            const response = await fetch(
-                `${API_BASE_URL}/mercenaries/status.php`,
-                {
-                    method: "PUT",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        userId: Number(userId),
-                        lookingFor: lookingFor,
-                        gameMode: selectedGameMode
-                    })
-                }
-            );
-
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok) {
+                console.error(error);
 
                 statusError.textContent =
-                    data.error ||
-                    "Unable to update game status.";
+                    "Unable to load game status.";
             }
-
-        } catch (error) {
-
-            console.error(error);
-
-            statusError.textContent =
-                "Unable to update game status.";
-        }
-    }
-
-
-    loadGameStatus();
-
-
-    // =====================================================
-    // FIND REGISTERED MERCENARY
-    // =====================================================
-
-    const findMercenaryButton =
-        document.getElementById(
-            "findMercenaryButton"
-        );
-
-    const closeSearchButton =
-        document.getElementById(
-            "closeSearchButton"
-        );
-
-    const searchSection =
-        document.getElementById(
-            "mercenarySearchSection"
-        );
-
-    const searchInput =
-        document.getElementById(
-            "mercenarySearch"
-        );
-
-    const searchResults =
-        document.getElementById(
-            "searchResults"
-        );
-
-    const searchError =
-        document.getElementById(
-            "searchError"
-        );
-
-
-    if (
-        findMercenaryButton &&
-        searchSection
-    ) {
-
-        findMercenaryButton.addEventListener(
-            "click",
-            function () {
-
-                closeManualSection();
-
-                searchSection.style.display =
-                    "block";
-
-                findMercenaryButton.style.display =
-                    "none";
-
-                if (searchInput) {
-                    searchInput.focus();
-                }
-            }
-        );
-    }
-
-
-    if (
-        closeSearchButton &&
-        searchSection
-    ) {
-
-        closeSearchButton.addEventListener(
-            "click",
-            closeSearchSection
-        );
-    }
-
-
-    function closeSearchSection() {
-
-        if (searchSection) {
-            searchSection.style.display =
-                "none";
         }
 
-        if (findMercenaryButton) {
-            findMercenaryButton.style.display =
-                "";
-        }
 
-        if (searchInput) {
-            searchInput.value = "";
-        }
-
-        if (searchResults) {
-            searchResults.innerHTML = "";
-        }
-
-        if (searchError) {
-            searchError.textContent = "";
-        }
-    }
-
-
-    if (searchInput) {
-
-        searchInput.addEventListener(
-            "input",
-            function () {
-
-                const query =
-                    searchInput.value.trim();
-
-                if (query === "") {
-
-                    searchResults.innerHTML = "";
-                    searchError.textContent = "";
-
-                    return;
-                }
-
-                searchMercenaries(query);
-            }
-        );
-    }
-
-
-    async function searchMercenaries(query) {
-
-        searchError.textContent = "";
-
-        try {
-
-            const response = await fetch(
-                `${API_BASE_URL}/mercenaries/search.php?q=${encodeURIComponent(query)}&userId=${userId}`
-            );
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                searchError.textContent =
-                    data.error ||
-                    "Unable to search mercenaries.";
-
-                return;
-            }
-
-
-            displaySearchResults(
-                data.users
-            );
-
-        } catch (error) {
-
-            console.error(error);
-
-            searchError.textContent =
-                "Unable to connect to the server.";
-        }
-    }
-
-
-    function displaySearchResults(users) {
-
-        searchResults.innerHTML = "";
-
-
-        if (
-            !users ||
-            users.length === 0
+        async function updateGameStatus(
+            lookingFor,
+            selectedGameMode
         ) {
 
-            searchResults.innerHTML = `
-                <div class="empty-message">
-                    <p>No mercenaries found.</p>
-                </div>
-            `;
-
-            return;
-        }
-
-
-        users.forEach(function (user) {
-
-            const card =
-                document.createElement("div");
-
-            card.className =
-                "contact-card";
-
-
-            card.innerHTML = `
-
-                <div class="contact-info">
-
-                    <h3>
-                        ${escapeHtml(user.Login)}
-                    </h3>
-
-                    <p>
-                        ${escapeHtml(user.FirstName)}
-                        ${escapeHtml(user.LastName)}
-                    </p>
-
-                    <p>
-                        ${escapeHtml(
-                            user.MercenaryClass ||
-                            "No Class"
-                        )}
-                        •
-                        ${escapeHtml(
-                            getRankName(
-                                user.MercenaryRank
-                            )
-                        )}
-                    </p>
-
-                    ${getLookingForText(user)}
-
-                </div>
-
-
-                <button
-                    type="button"
-                    class="primary-button add-mercenary-button"
-                >
-                    + Add
-                </button>
-            `;
-
-
-            const addButton =
-                card.querySelector(
-                    ".add-mercenary-button"
-                );
-
-
-            addButton.addEventListener(
-                "click",
-                function () {
-
-                    addRegisteredMercenary(
-                        user.ID,
-                        addButton
-                    );
-                }
-            );
-
-
-            searchResults.appendChild(
-                card
-            );
-        });
-    }
-
-
-    async function addRegisteredMercenary(
-        mercenaryId,
-        button
-    ) {
-
-        searchError.textContent = "";
-
-        try {
-
-            const response = await fetch(
-                `${API_BASE_URL}/mercenaries/mercenaries.php`,
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        userId:
-                            Number(userId),
-
-                        mercenaryId:
-                            Number(mercenaryId)
-                    })
-                }
-            );
-
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                searchError.textContent =
-                    data.error ||
-                    "Unable to add mercenary.";
-
-                return;
-            }
-
-
-            button.textContent =
-                "Added";
-
-            button.disabled =
-                true;
-
-
-            loadMercenaries();
-
-        } catch (error) {
-
-            console.error(error);
-
-            searchError.textContent =
-                "Unable to connect to the server.";
-        }
-    }
-
-
-    // =====================================================
-    // MANUAL MERCENARY CREATE / EDIT
-    // =====================================================
-
-    const addManualMercenaryButton =
-        document.getElementById(
-            "addManualMercenaryButton"
-        );
-
-    const manualMercenarySection =
-        document.getElementById(
-            "manualMercenarySection"
-        );
-
-    const closeManualMercenaryButton =
-        document.getElementById(
-            "closeManualMercenaryButton"
-        );
-
-    const cancelManualMercenaryButton =
-        document.getElementById(
-            "cancelManualMercenaryButton"
-        );
-
-    const manualMercenaryForm =
-        document.getElementById(
-            "manualMercenaryForm"
-        );
-
-    const manualMercenaryError =
-        document.getElementById(
-            "manualMercenaryError"
-        );
-
-    const manualMercenaryTitle =
-        document.getElementById(
-            "manualMercenaryTitle"
-        );
-
-    const manualMercenaryDescription =
-        document.getElementById(
-            "manualMercenaryDescription"
-        );
-
-    const manualMercenarySubmitButton =
-        document.getElementById(
-            "manualMercenarySubmitButton"
-        );
-
-
-    let editingContactId = null;
-
-
-    function setCreateMode() {
-
-        editingContactId = null;
-
-        if (manualMercenaryTitle) {
-            manualMercenaryTitle.textContent =
-                "Add Mercenary";
-        }
-
-        if (manualMercenaryDescription) {
-            manualMercenaryDescription.textContent =
-                "Create your own mercenary contact.";
-        }
-
-        if (manualMercenarySubmitButton) {
-            manualMercenarySubmitButton.textContent =
-                "Add Mercenary";
-        }
-    }
-
-
-    function setEditMode(contact) {
-
-        editingContactId =
-            Number(contact.ContactID);
-
-
-        manualMercenaryTitle.textContent =
-            "Edit Mercenary";
-
-        manualMercenaryDescription.textContent =
-            "Update your mercenary contact.";
-
-        manualMercenarySubmitButton.textContent =
-            "Save Changes";
-
-
-        document.getElementById(
-            "manualFirstName"
-        ).value =
-            contact.FirstName || "";
-
-
-        document.getElementById(
-            "manualLastName"
-        ).value =
-            contact.LastName || "";
-
-
-        document.getElementById(
-            "manualLogin"
-        ).value =
-            contact.Login || "";
-
-
-        document.getElementById(
-            "manualNickname"
-        ).value =
-            contact.Nickname || "";
-
-
-        document.getElementById(
-            "manualEmail"
-        ).value =
-            contact.Email || "";
-
-
-        document.getElementById(
-            "manualPhone"
-        ).value =
-            contact.Phone || "";
-
-
-        document.getElementById(
-            "manualAddress"
-        ).value =
-            contact.Address || "";
-
-
-        document.getElementById(
-            "manualClass"
-        ).value =
-            contact.MercenaryClass || "";
-
-
-        document.getElementById(
-            "manualRank"
-        ).value =
-            contact.MercenaryRank || "";
-
-
-        document.getElementById(
-            "manualLookingFor"
-        ).checked =
-            Number(contact.LookingFor) === 1;
-
-
-        document.getElementById(
-            "manualGameMode"
-        ).value =
-            contact.GameMode || "";
-
-
-        document.getElementById(
-            "manualNote"
-        ).value =
-            contact.Note || "";
-
-
-        manualMercenaryError.textContent =
-            "";
-
-
-        closeSearchSection();
-
-
-        manualMercenarySection.style.display =
-            "block";
-
-        addManualMercenaryButton.style.display =
-            "none";
-
-
-        manualMercenarySection.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-    }
-
-
-    if (
-        addManualMercenaryButton &&
-        manualMercenarySection
-    ) {
-
-        addManualMercenaryButton.addEventListener(
-            "click",
-            function () {
-
-                closeSearchSection();
-
-                manualMercenaryForm.reset();
-
-                setCreateMode();
-
-                manualMercenarySection.style.display =
-                    "block";
-
-                addManualMercenaryButton.style.display =
-                    "none";
-
-                manualMercenaryError.textContent =
-                    "";
-
-
-                const firstNameInput =
-                    document.getElementById(
-                        "manualFirstName"
-                    );
-
-                if (firstNameInput) {
-                    firstNameInput.focus();
-                }
-            }
-        );
-    }
-
-
-    if (closeManualMercenaryButton) {
-
-        closeManualMercenaryButton.addEventListener(
-            "click",
-            closeManualSection
-        );
-    }
-
-
-    if (cancelManualMercenaryButton) {
-
-        cancelManualMercenaryButton.addEventListener(
-            "click",
-            closeManualSection
-        );
-    }
-
-
-    function closeManualSection() {
-
-        editingContactId = null;
-
-
-        if (manualMercenarySection) {
-            manualMercenarySection.style.display =
-                "none";
-        }
-
-        if (addManualMercenaryButton) {
-            addManualMercenaryButton.style.display =
-                "";
-        }
-
-        if (manualMercenaryForm) {
-            manualMercenaryForm.reset();
-        }
-
-        if (manualMercenaryError) {
-            manualMercenaryError.textContent =
-                "";
-        }
-
-
-        setCreateMode();
-    }
-
-
-    if (manualMercenaryForm) {
-
-        manualMercenaryForm.addEventListener(
-            "submit",
-            async function (event) {
-
-                event.preventDefault();
-
-                manualMercenaryError.textContent =
-                    "";
-
-
-                const contactData = {
-
-                    userId:
-                        Number(userId),
-
-                    firstName:
-                        document
-                            .getElementById(
-                                "manualFirstName"
-                            )
-                            .value
-                            .trim(),
-
-                    lastName:
-                        document
-                            .getElementById(
-                                "manualLastName"
-                            )
-                            .value
-                            .trim(),
-
-                    login:
-                        document
-                            .getElementById(
-                                "manualLogin"
-                            )
-                            .value
-                            .trim(),
-
-                    nickname:
-                        document
-                            .getElementById(
-                                "manualNickname"
-                            )
-                            .value
-                            .trim(),
-
-                    email:
-                        document
-                            .getElementById(
-                                "manualEmail"
-                            )
-                            .value
-                            .trim(),
-
-                    phone:
-                        document
-                            .getElementById(
-                                "manualPhone"
-                            )
-                            .value
-                            .trim(),
-
-                    address:
-                        document
-                            .getElementById(
-                                "manualAddress"
-                            )
-                            .value
-                            .trim(),
-
-                    mercenaryClass:
-                        document
-                            .getElementById(
-                                "manualClass"
-                            )
-                            .value,
-
-                    mercenaryRank:
-                        document
-                            .getElementById(
-                                "manualRank"
-                            )
-                            .value,
-
-                    lookingFor:
-                        document
-                            .getElementById(
-                                "manualLookingFor"
-                            )
-                            .checked,
-
-                    gameMode:
-                        document
-                            .getElementById(
-                                "manualGameMode"
-                            )
-                            .value,
-
-                    note:
-                        document
-                            .getElementById(
-                                "manualNote"
-                            )
-                            .value
-                            .trim(),
-
-                    photo: ""
-                };
-
-
-                if (
-                    contactData.firstName === "" ||
-                    contactData.lastName === ""
-                ) {
-
-                    manualMercenaryError.textContent =
-                        "First name and last name are required.";
-
-                    return;
-                }
-
-
-                const isEditing =
-                    editingContactId !== null;
-
-
-                if (isEditing) {
-
-                    contactData.contactId =
-                        editingContactId;
-                }
-
-
-                try {
-
-                    const response = await fetch(
-                        `${API_BASE_URL}/contacts/manual-contacts.php`,
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE_URL}/mercenaries/status.php`,
                         {
-                            method:
-                                isEditing
-                                    ? "PUT"
-                                    : "POST",
+                            method: "PUT",
 
                             headers: {
                                 "Content-Type":
@@ -963,186 +207,1078 @@ document.addEventListener("DOMContentLoaded", function () {
                             },
 
                             body:
-                                JSON.stringify(
-                                    contactData
-                                )
+                                JSON.stringify({
+                                    userId:
+                                        Number(userId),
+
+                                    lookingFor:
+                                        lookingFor,
+
+                                    gameMode:
+                                        selectedGameMode
+                                })
                         }
                     );
 
 
-                    const data =
-                        await response.json();
+                const data =
+                    await response.json();
 
 
-                    if (!response.ok) {
+                if (!response.ok) {
 
-                        manualMercenaryError.textContent =
-                            data.error ||
-                            (
-                                isEditing
-                                    ? "Unable to update mercenary."
-                                    : "Unable to add mercenary."
-                            );
+                    statusError.textContent =
+                        data.error ||
+                        "Unable to update game status.";
+                }
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                statusError.textContent =
+                    "Unable to update game status.";
+            }
+        }
+
+
+        if (lookingForToggle) {
+
+            lookingForToggle.addEventListener(
+                "change",
+                function () {
+
+                    statusError.textContent =
+                        "";
+
+
+                    if (
+                        lookingForToggle.checked
+                    ) {
+
+                        gameModeGroup.style.display =
+                            "flex";
+
+                    } else {
+
+                        gameModeGroup.style.display =
+                            "none";
+
+                        gameMode.value =
+                            "";
+
+                        updateGameStatus(
+                            false,
+                            ""
+                        );
+                    }
+                }
+            );
+        }
+
+
+        if (gameMode) {
+
+            gameMode.addEventListener(
+                "change",
+                function () {
+
+                    if (
+                        gameMode.value !== ""
+                    ) {
+
+                        updateGameStatus(
+                            true,
+                            gameMode.value
+                        );
+                    }
+                }
+            );
+        }
+
+
+        loadGameStatus();
+
+
+        // =================================================
+        // FIND REGISTERED MERCENARY
+        // =================================================
+
+        const findMercenaryButton =
+            document.getElementById(
+                "findMercenaryButton"
+            );
+
+        const closeSearchButton =
+            document.getElementById(
+                "closeSearchButton"
+            );
+
+        const searchSection =
+            document.getElementById(
+                "mercenarySearchSection"
+            );
+
+        const searchInput =
+            document.getElementById(
+                "mercenarySearch"
+            );
+
+        const searchResults =
+            document.getElementById(
+                "searchResults"
+            );
+
+        const searchError =
+            document.getElementById(
+                "searchError"
+            );
+
+
+        if (
+            findMercenaryButton &&
+            searchSection
+        ) {
+
+            findMercenaryButton.addEventListener(
+                "click",
+                function () {
+
+                    closeManualSection();
+
+                    searchSection.style.display =
+                        "block";
+
+                    findMercenaryButton.style.display =
+                        "none";
+
+                    searchInput?.focus();
+                }
+            );
+        }
+
+
+        if (closeSearchButton) {
+
+            closeSearchButton.addEventListener(
+                "click",
+                closeSearchSection
+            );
+        }
+
+
+        function closeSearchSection() {
+
+            if (searchSection) {
+
+                searchSection.style.display =
+                    "none";
+            }
+
+
+            if (findMercenaryButton) {
+
+                findMercenaryButton.style.display =
+                    "";
+            }
+
+
+            if (searchInput) {
+
+                searchInput.value =
+                    "";
+            }
+
+
+            if (searchResults) {
+
+                searchResults.innerHTML =
+                    "";
+            }
+
+
+            if (searchError) {
+
+                searchError.textContent =
+                    "";
+            }
+        }
+
+
+        if (searchInput) {
+
+            searchInput.addEventListener(
+                "input",
+                function () {
+
+                    const query =
+                        searchInput
+                            .value
+                            .trim();
+
+
+                    if (query === "") {
+
+                        searchResults.innerHTML =
+                            "";
+
+                        searchError.textContent =
+                            "";
 
                         return;
                     }
 
 
-                    editingContactId =
-                        null;
-
-
-                    manualMercenaryForm.reset();
-
-                    manualMercenarySection.style.display =
-                        "none";
-
-                    addManualMercenaryButton.style.display =
-                        "";
-
-
-                    setCreateMode();
-
-                    loadMercenaries();
-
-
-                } catch (error) {
-
-                    console.error(error);
-
-                    manualMercenaryError.textContent =
-                        "Unable to connect to the server.";
-                }
-            }
-        );
-    }
-
-
-    // =====================================================
-    // MY MERCENARIES SEARCH
-    // =====================================================
-
-    const mercenaryListSearch =
-        document.getElementById(
-            "mercenaryListSearch"
-        );
-
-    let allMercenaries = [];
-
-
-    if (mercenaryListSearch) {
-
-        mercenaryListSearch.addEventListener(
-            "input",
-            function () {
-
-                const query =
-                    mercenaryListSearch
-                        .value
-                        .trim()
-                        .toLowerCase();
-
-
-                if (query === "") {
-
-                    displayMercenaries(
-                        allMercenaries
+                    searchMercenaries(
+                        query
                     );
+                }
+            );
+        }
+
+
+        async function searchMercenaries(
+            query
+        ) {
+
+            searchError.textContent =
+                "";
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE_URL}/mercenaries/search.php?q=${encodeURIComponent(query)}&userId=${userId}`
+                    );
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    searchError.textContent =
+                        data.error ||
+                        "Unable to search mercenaries.";
 
                     return;
                 }
 
 
-                const filtered =
-                    allMercenaries.filter(
-                        function (mercenary) {
-
-                            const fullName =
-                                `${mercenary.FirstName || ""} ${mercenary.LastName || ""}`;
+                displaySearchResults(
+                    data.users || []
+                );
 
 
-                            const values = [
+            } catch (error) {
 
-                                mercenary.Login,
+                console.error(error);
 
-                                mercenary.FirstName,
-
-                                mercenary.LastName,
-
-                                fullName,
-
-                                mercenary.Nickname,
-
-                                mercenary.MercenaryClass,
-
-                                getRankName(
-                                    mercenary.MercenaryRank
-                                ),
-
-                                mercenary.GameMode
-                            ];
+                searchError.textContent =
+                    "Unable to connect to the server.";
+            }
+        }
 
 
-                            return values.some(
-                                function (value) {
+        // =================================================
+        // SEARCH RESULT CARDS
+        // =================================================
 
-                                    return String(
-                                        value || ""
+        function displaySearchResults(
+            users
+        ) {
+
+            searchResults.innerHTML =
+                "";
+
+
+            if (
+                !users ||
+                users.length === 0
+            ) {
+
+                searchResults.innerHTML = `
+                    <div class="empty-message">
+                        <p>
+                            No mercenaries found.
+                        </p>
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            users.forEach(
+                function (user) {
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+                    card.className =
+                        "contact-card";
+
+
+                    const classImage =
+                        getClassImage(
+                            user.MercenaryClass
+                        );
+
+
+                    card.innerHTML = `
+
+                        <img
+                            src="${classImage}"
+                            alt="${escapeHtml(
+                                user.MercenaryClass ||
+                                "Mercenary"
+                            )}"
+                            class="class-avatar"
+                        >
+
+                        <div class="contact-info">
+
+                            <h3>
+                                ${escapeHtml(
+                                    user.Login
+                                )}
+                            </h3>
+
+                            <p>
+                                ${escapeHtml(
+                                    user.FirstName
+                                )}
+                                ${escapeHtml(
+                                    user.LastName
+                                )}
+                            </p>
+
+                            <p>
+                                ${escapeHtml(
+                                    user.MercenaryClass ||
+                                    "No Class"
+                                )}
+                                •
+                                ${escapeHtml(
+                                    getRankName(
+                                        user.MercenaryRank
                                     )
-                                        .toLowerCase()
-                                        .includes(query);
-                                }
+                                )}
+                            </p>
+
+                            ${getLookingForText(
+                                user
+                            )}
+
+                        </div>
+
+                        <button
+                            type="button"
+                            class="
+                                primary-button
+                                add-mercenary-button
+                            "
+                        >
+                            + Add
+                        </button>
+                    `;
+
+
+                    const addButton =
+                        card.querySelector(
+                            ".add-mercenary-button"
+                        );
+
+
+                    addButton.addEventListener(
+                        "click",
+                        function () {
+
+                            addRegisteredMercenary(
+                                user.ID,
+                                addButton
                             );
                         }
                     );
 
 
-                displayMercenaries(
-                    filtered
-                );
-            }
-        );
-    }
-
-
-    // =====================================================
-    // LOAD MY MERCENARIES
-    // =====================================================
-
-    async function loadMercenaries() {
-
-        const mercenaryList =
-            document.getElementById(
-                "mercenaryList"
+                    searchResults.appendChild(
+                        card
+                    );
+                }
             );
-
-        const emptyMessage =
-            document.getElementById(
-                "emptyMessage"
-            );
-
-
-        if (!mercenaryList) {
-            return;
         }
 
 
-        try {
+        async function addRegisteredMercenary(
+            mercenaryId,
+            button
+        ) {
 
-            const response = await fetch(
-                `${API_BASE_URL}/mercenaries/mercenaries.php?userId=${userId}`
+            searchError.textContent =
+                "";
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE_URL}/mercenaries/mercenaries.php`,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    userId:
+                                        Number(userId),
+
+                                    mercenaryId:
+                                        Number(
+                                            mercenaryId
+                                        )
+                                })
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    searchError.textContent =
+                        data.error ||
+                        "Unable to add mercenary.";
+
+                    return;
+                }
+
+
+                button.textContent =
+                    "Added";
+
+                button.disabled =
+                    true;
+
+
+                loadMercenaries();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                searchError.textContent =
+                    "Unable to connect to the server.";
+            }
+        }
+
+
+        // =================================================
+        // MANUAL MERCENARY FORM
+        // =================================================
+
+        const addManualMercenaryButton =
+            document.getElementById(
+                "addManualMercenaryButton"
+            );
+
+        const manualMercenarySection =
+            document.getElementById(
+                "manualMercenarySection"
+            );
+
+        const closeManualMercenaryButton =
+            document.getElementById(
+                "closeManualMercenaryButton"
+            );
+
+        const cancelManualMercenaryButton =
+            document.getElementById(
+                "cancelManualMercenaryButton"
+            );
+
+        const manualMercenaryForm =
+            document.getElementById(
+                "manualMercenaryForm"
+            );
+
+        const manualMercenaryError =
+            document.getElementById(
+                "manualMercenaryError"
+            );
+
+        const manualMercenaryTitle =
+            document.getElementById(
+                "manualMercenaryTitle"
+            );
+
+        const manualMercenaryDescription =
+            document.getElementById(
+                "manualMercenaryDescription"
+            );
+
+        const manualMercenarySubmitButton =
+            document.getElementById(
+                "manualMercenarySubmitButton"
             );
 
 
-            const data =
-                await response.json();
+        let editingContactId =
+            null;
 
 
-            if (!response.ok) {
+        function setCreateMode() {
 
-                mercenaryList.innerHTML = "";
+            editingContactId =
+                null;
 
-                if (emptyMessage) {
+            manualMercenaryTitle.textContent =
+                "Add Mercenary";
+
+            manualMercenaryDescription.textContent =
+                "Create your own mercenary contact.";
+
+            manualMercenarySubmitButton.textContent =
+                "Add Mercenary";
+        }
+
+
+        function closeManualSection() {
+
+            editingContactId =
+                null;
+
+
+            if (manualMercenarySection) {
+
+                manualMercenarySection.style.display =
+                    "none";
+            }
+
+
+            if (addManualMercenaryButton) {
+
+                addManualMercenaryButton.style.display =
+                    "";
+            }
+
+
+            if (manualMercenaryForm) {
+
+                manualMercenaryForm.reset();
+            }
+
+
+            if (manualMercenaryError) {
+
+                manualMercenaryError.textContent =
+                    "";
+            }
+
+
+            setCreateMode();
+        }
+
+
+        function setEditMode(
+            contact
+        ) {
+
+            editingContactId =
+                Number(
+                    contact.ContactID
+                );
+
+
+            manualMercenaryTitle.textContent =
+                "Edit Mercenary";
+
+            manualMercenaryDescription.textContent =
+                "Update your mercenary contact.";
+
+            manualMercenarySubmitButton.textContent =
+                "Save Changes";
+
+
+            document.getElementById(
+                "manualFirstName"
+            ).value =
+                contact.FirstName || "";
+
+
+            document.getElementById(
+                "manualLastName"
+            ).value =
+                contact.LastName || "";
+
+
+            document.getElementById(
+                "manualLogin"
+            ).value =
+                contact.Login || "";
+
+
+            document.getElementById(
+                "manualNickname"
+            ).value =
+                contact.Nickname || "";
+
+
+            document.getElementById(
+                "manualEmail"
+            ).value =
+                contact.Email || "";
+
+
+            document.getElementById(
+                "manualPhone"
+            ).value =
+                contact.Phone || "";
+
+
+            document.getElementById(
+                "manualAddress"
+            ).value =
+                contact.Address || "";
+
+
+            document.getElementById(
+                "manualClass"
+            ).value =
+                contact.MercenaryClass || "";
+
+
+            document.getElementById(
+                "manualRank"
+            ).value =
+                contact.MercenaryRank || "";
+
+
+            document.getElementById(
+                "manualLookingFor"
+            ).checked =
+                Number(
+                    contact.LookingFor
+                ) === 1;
+
+
+            document.getElementById(
+                "manualGameMode"
+            ).value =
+                contact.GameMode || "";
+
+
+            document.getElementById(
+                "manualNote"
+            ).value =
+                contact.Note || "";
+
+
+            manualMercenaryError.textContent =
+                "";
+
+
+            closeSearchSection();
+
+
+            manualMercenarySection.style.display =
+                "block";
+
+            addManualMercenaryButton.style.display =
+                "none";
+
+
+            manualMercenarySection.scrollIntoView({
+                behavior:
+                    "smooth",
+
+                block:
+                    "start"
+            });
+        }
+
+
+        if (addManualMercenaryButton) {
+
+            addManualMercenaryButton.addEventListener(
+                "click",
+                function () {
+
+                    closeSearchSection();
+
+                    manualMercenaryForm.reset();
+
+                    setCreateMode();
+
+                    manualMercenarySection.style.display =
+                        "block";
+
+                    addManualMercenaryButton.style.display =
+                        "none";
+
+                    manualMercenaryError.textContent =
+                        "";
+
+                    document
+                        .getElementById(
+                            "manualFirstName"
+                        )
+                        .focus();
+                }
+            );
+        }
+
+
+        closeManualMercenaryButton
+            ?.addEventListener(
+                "click",
+                closeManualSection
+            );
+
+
+        cancelManualMercenaryButton
+            ?.addEventListener(
+                "click",
+                closeManualSection
+            );
+
+
+        if (manualMercenaryForm) {
+
+            manualMercenaryForm.addEventListener(
+                "submit",
+                async function (
+                    event
+                ) {
+
+                    event.preventDefault();
+
+                    manualMercenaryError.textContent =
+                        "";
+
+
+                    const contactData = {
+
+                        userId:
+                            Number(userId),
+
+                        firstName:
+                            document
+                                .getElementById(
+                                    "manualFirstName"
+                                )
+                                .value
+                                .trim(),
+
+                        lastName:
+                            document
+                                .getElementById(
+                                    "manualLastName"
+                                )
+                                .value
+                                .trim(),
+
+                        login:
+                            document
+                                .getElementById(
+                                    "manualLogin"
+                                )
+                                .value
+                                .trim(),
+
+                        nickname:
+                            document
+                                .getElementById(
+                                    "manualNickname"
+                                )
+                                .value
+                                .trim(),
+
+                        email:
+                            document
+                                .getElementById(
+                                    "manualEmail"
+                                )
+                                .value
+                                .trim(),
+
+                        phone:
+                            document
+                                .getElementById(
+                                    "manualPhone"
+                                )
+                                .value
+                                .trim(),
+
+                        address:
+                            document
+                                .getElementById(
+                                    "manualAddress"
+                                )
+                                .value
+                                .trim(),
+
+                        mercenaryClass:
+                            document
+                                .getElementById(
+                                    "manualClass"
+                                )
+                                .value,
+
+                        mercenaryRank:
+                            document
+                                .getElementById(
+                                    "manualRank"
+                                )
+                                .value,
+
+                        lookingFor:
+                            document
+                                .getElementById(
+                                    "manualLookingFor"
+                                )
+                                .checked,
+
+                        gameMode:
+                            document
+                                .getElementById(
+                                    "manualGameMode"
+                                )
+                                .value,
+
+                        note:
+                            document
+                                .getElementById(
+                                    "manualNote"
+                                )
+                                .value
+                                .trim(),
+
+                        photo:
+                            ""
+                    };
+
+
+                    if (
+                        contactData.firstName === "" ||
+                        contactData.lastName === ""
+                    ) {
+
+                        manualMercenaryError.textContent =
+                            "First name and last name are required.";
+
+                        return;
+                    }
+
+
+                    const isEditing =
+                        editingContactId !==
+                        null;
+
+
+                    if (isEditing) {
+
+                        contactData.contactId =
+                            editingContactId;
+                    }
+
+
+                    try {
+
+                        const response =
+                            await fetch(
+                                `${API_BASE_URL}/contacts/manual-contacts.php`,
+                                {
+                                    method:
+                                        isEditing
+                                            ? "PUT"
+                                            : "POST",
+
+                                    headers: {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                    body:
+                                        JSON.stringify(
+                                            contactData
+                                        )
+                                }
+                            );
+
+
+                        const data =
+                            await response.json();
+
+
+                        if (!response.ok) {
+
+                            manualMercenaryError.textContent =
+                                data.error ||
+                                (
+                                    isEditing
+                                        ? "Unable to update mercenary."
+                                        : "Unable to add mercenary."
+                                );
+
+                            return;
+                        }
+
+
+                        closeManualSection();
+
+                        loadMercenaries();
+
+
+                    } catch (error) {
+
+                        console.error(error);
+
+                        manualMercenaryError.textContent =
+                            "Unable to connect to the server.";
+                    }
+                }
+            );
+        }
+
+
+        // =================================================
+        // MY MERCENARIES
+        // =================================================
+
+        const mercenaryListSearch =
+            document.getElementById(
+                "mercenaryListSearch"
+            );
+
+        let allMercenaries =
+            [];
+
+
+        if (mercenaryListSearch) {
+
+            mercenaryListSearch.addEventListener(
+                "input",
+                function () {
+
+                    const query =
+                        mercenaryListSearch
+                            .value
+                            .trim()
+                            .toLowerCase();
+
+
+                    if (query === "") {
+
+                        displayMercenaries(
+                            allMercenaries
+                        );
+
+                        return;
+                    }
+
+
+                    const filtered =
+                        allMercenaries.filter(
+                            function (
+                                mercenary
+                            ) {
+
+                                const fullName =
+                                    `${mercenary.FirstName || ""} ${mercenary.LastName || ""}`;
+
+
+                                const values = [
+
+                                    mercenary.Login,
+
+                                    mercenary.FirstName,
+
+                                    mercenary.LastName,
+
+                                    fullName,
+
+                                    mercenary.Nickname,
+
+                                    mercenary.MercenaryClass,
+
+                                    getRankName(
+                                        mercenary.MercenaryRank
+                                    ),
+
+                                    mercenary.GameMode
+                                ];
+
+
+                                return values.some(
+                                    function (
+                                        value
+                                    ) {
+
+                                        return String(
+                                            value || ""
+                                        )
+                                            .toLowerCase()
+                                            .includes(
+                                                query
+                                            );
+                                    }
+                                );
+                            }
+                        );
+
+
+                    displayMercenaries(
+                        filtered
+                    );
+                }
+            );
+        }
+
+
+        async function loadMercenaries() {
+
+            const mercenaryList =
+                document.getElementById(
+                    "mercenaryList"
+                );
+
+            const emptyMessage =
+                document.getElementById(
+                    "emptyMessage"
+                );
+
+
+            if (!mercenaryList) {
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE_URL}/mercenaries/mercenaries.php?userId=${userId}`
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    mercenaryList.innerHTML =
+                        "";
 
                     emptyMessage.style.display =
                         "block";
@@ -1152,29 +1288,27 @@ document.addEventListener("DOMContentLoaded", function () {
                             Unable to load mercenaries.
                         </p>
                     `;
+
+                    return;
                 }
 
-                return;
-            }
+
+                allMercenaries =
+                    data.mercenaries ||
+                    [];
 
 
-            allMercenaries =
-                data.mercenaries || [];
+                displayMercenaries(
+                    allMercenaries
+                );
 
 
-            displayMercenaries(
-                allMercenaries
-            );
+            } catch (error) {
 
+                console.error(error);
 
-        } catch (error) {
-
-            console.error(error);
-
-            mercenaryList.innerHTML = "";
-
-
-            if (emptyMessage) {
+                mercenaryList.innerHTML =
+                    "";
 
                 emptyMessage.style.display =
                     "block";
@@ -1186,37 +1320,35 @@ document.addEventListener("DOMContentLoaded", function () {
                 `;
             }
         }
-    }
 
 
-    // =====================================================
-    // DISPLAY MY MERCENARIES
-    // =====================================================
+        // =================================================
+        // DISPLAY MY MERCENARIES
+        // =================================================
 
-    function displayMercenaries(
-        mercenaries
-    ) {
-
-        const mercenaryList =
-            document.getElementById(
-                "mercenaryList"
-            );
-
-        const emptyMessage =
-            document.getElementById(
-                "emptyMessage"
-            );
-
-
-        mercenaryList.innerHTML = "";
-
-
-        if (
-            !mercenaries ||
-            mercenaries.length === 0
+        function displayMercenaries(
+            mercenaries
         ) {
 
-            if (emptyMessage) {
+            const mercenaryList =
+                document.getElementById(
+                    "mercenaryList"
+                );
+
+            const emptyMessage =
+                document.getElementById(
+                    "emptyMessage"
+                );
+
+
+            mercenaryList.innerHTML =
+                "";
+
+
+            if (
+                !mercenaries ||
+                mercenaries.length === 0
+            ) {
 
                 emptyMessage.style.display =
                     "block";
@@ -1252,654 +1384,767 @@ document.addEventListener("DOMContentLoaded", function () {
                         </p>
                     `;
                 }
+
+
+                return;
             }
 
-            return;
-        }
 
-
-        if (emptyMessage) {
             emptyMessage.style.display =
                 "none";
-        }
 
 
-        mercenaries.forEach(
-            function (mercenary) {
+            mercenaries.forEach(
+                function (
+                    mercenary
+                ) {
 
-                const row =
-                    document.createElement(
-                        "tr"
-                    );
-
-
-                const lookingFor =
-                    Number(
-                        mercenary.LookingFor
-                    ) === 1;
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
 
 
-                const statusText =
-                    lookingFor
-                        ? "Looking"
-                        : "Not Looking";
+                    const classImage =
+                        getClassImage(
+                            mercenary.MercenaryClass
+                        );
 
 
-                const statusClass =
-                    lookingFor
-                        ? "online"
-                        : "offline";
+                    const lookingFor =
+                        Number(
+                            mercenary.LookingFor
+                        ) === 1;
 
 
-                const gameModeText =
-                    lookingFor &&
-                    mercenary.GameMode
-
-                        ? mercenary.GameMode
-
-                        : "—";
+                    const statusText =
+                        lookingFor
+                            ? "Looking"
+                            : "Not Looking";
 
 
-                const username =
-                    mercenary.Login ||
-                    "—";
+                    const statusClass =
+                        lookingFor
+                            ? "online"
+                            : "offline";
 
 
-                let displayName =
-                    `${mercenary.FirstName || ""} ${mercenary.LastName || ""}`
-                        .trim();
+                    const gameModeText =
+                        lookingFor &&
+                        mercenary.GameMode
+                            ? mercenary.GameMode
+                            : "—";
 
 
-                if (mercenary.Nickname) {
-
-                    displayName +=
-                        ` (${mercenary.Nickname})`;
-                }
+                    const username =
+                        mercenary.Login ||
+                        "—";
 
 
-                const isManual =
-                    mercenary.SourceType ===
-                    "manual";
+                    let displayName =
+                        `${mercenary.FirstName || ""} ${mercenary.LastName || ""}`
+                            .trim();
 
 
-                let manualButtons = "";
+                    if (
+                        mercenary.Nickname
+                    ) {
+
+                        displayName +=
+                            ` (${mercenary.Nickname})`;
+                    }
 
 
-                if (isManual) {
-
-                    manualButtons = `
-
-                        <button
-                            type="button"
-                            class="info-button"
-                        >
-                            Info
-                        </button>
+                    const isManual =
+                        mercenary.SourceType ===
+                        "manual";
 
 
-                        <button
-                            type="button"
-                            class="edit-contact-button"
-                            data-contact-id="${mercenary.ContactID}"
-                        >
-                            Edit
-                        </button>
+                    let manualButtons =
+                        "";
 
 
-                        <div
-                            class="contact-info-bubble hidden"
-                        >
+                    if (isManual) {
 
-                            <p>
-                                <strong>Email:</strong>
-                                ${escapeHtml(
-                                    mercenary.Email ||
-                                    "—"
-                                )}
-                            </p>
-
-                            <p>
-                                <strong>Phone:</strong>
-                                ${escapeHtml(
-                                    mercenary.Phone ||
-                                    "—"
-                                )}
-                            </p>
-
-                            <p>
-                                <strong>Address:</strong>
-                                ${escapeHtml(
-                                    mercenary.Address ||
-                                    "—"
-                                )}
-                            </p>
-
-                            <p>
-                                <strong>Note:</strong>
-                                ${escapeHtml(
-                                    mercenary.Note ||
-                                    "—"
-                                )}
-                            </p>
-
-                        </div>
-                    `;
-                }
-
-
-                row.innerHTML = `
-
-                    <td>
-                        <strong>
-                            ${escapeHtml(username)}
-                        </strong>
-                    </td>
-
-
-                    <td>
-                        ${escapeHtml(displayName)}
-                    </td>
-
-
-                    <td>
-                        ${escapeHtml(
-                            mercenary.MercenaryClass ||
-                            "No Class"
-                        )}
-                    </td>
-
-
-                    <td>
-                        ${escapeHtml(
-                            getRankName(
-                                mercenary.MercenaryRank
-                            )
-                        )}
-                    </td>
-
-
-                    <td>
-
-                        <span
-                            class="status ${statusClass}"
-                        >
-                            ${statusText}
-                        </span>
-
-                    </td>
-
-
-                    <td>
-                        ${escapeHtml(gameModeText)}
-                    </td>
-
-
-                    <td>
-
-                        <div class="mercenary-actions">
-
-                            ${manualButtons}
+                        manualButtons = `
 
                             <button
                                 type="button"
-                                class="remove-button"
-
-                                data-source-type="${
-                                    mercenary.SourceType ||
-                                    (
-                                        mercenary.ContactID
-                                            ? "manual"
-                                            : "registered"
-                                    )
-                                }"
-
-                                data-mercenary-id="${
-                                    mercenary.MercenaryID ||
-                                    ""
-                                }"
-
-                                data-contact-id="${
-                                    mercenary.ContactID ||
-                                    ""
-                                }"
+                                class="info-button"
                             >
-                                Remove
+                                Info
                             </button>
 
-                        </div>
+                            <button
+                                type="button"
+                                class="edit-contact-button"
+                                data-contact-id="${mercenary.ContactID}"
+                            >
+                                Edit
+                            </button>
 
-                    </td>
-                `;
+                            <div
+                                class="
+                                    contact-info-bubble
+                                    hidden
+                                "
+                            >
 
+                                <p>
+                                    <strong>
+                                        Email:
+                                    </strong>
 
-                mercenaryList.appendChild(
-                    row
-                );
-            }
-        );
+                                    ${escapeHtml(
+                                        mercenary.Email ||
+                                        "—"
+                                    )}
+                                </p>
 
+                                <p>
+                                    <strong>
+                                        Phone:
+                                    </strong>
 
-        // =================================================
-        // INFO BUTTONS
-        // =================================================
+                                    ${escapeHtml(
+                                        mercenary.Phone ||
+                                        "—"
+                                    )}
+                                </p>
 
-        const infoButtons =
-            mercenaryList.querySelectorAll(
-                ".info-button"
-            );
+                                <p>
+                                    <strong>
+                                        Address:
+                                    </strong>
 
+                                    ${escapeHtml(
+                                        mercenary.Address ||
+                                        "—"
+                                    )}
+                                </p>
 
-        infoButtons.forEach(
-            function (button) {
+                                <p>
+                                    <strong>
+                                        Note:
+                                    </strong>
 
-                button.addEventListener(
-                    "click",
-                    function (event) {
+                                    ${escapeHtml(
+                                        mercenary.Note ||
+                                        "—"
+                                    )}
+                                </p>
 
-                        event.stopPropagation();
-
-
-                        const actions =
-                            button.closest(
-                                ".mercenary-actions"
-                            );
-
-
-                        const bubble =
-                            actions.querySelector(
-                                ".contact-info-bubble"
-                            );
-
-
-                        document
-                            .querySelectorAll(
-                                ".contact-info-bubble"
-                            )
-                            .forEach(
-                                function (
-                                    otherBubble
-                                ) {
-
-                                    if (
-                                        otherBubble !==
-                                        bubble
-                                    ) {
-
-                                        otherBubble
-                                            .classList
-                                            .add(
-                                                "hidden"
-                                            );
-                                    }
-                                }
-                            );
-
-
-                        bubble.classList.toggle(
-                            "hidden"
-                        );
+                            </div>
+                        `;
                     }
-                );
-            }
-        );
 
 
-        // =================================================
-        // EDIT BUTTONS
-        // Only manually-created contacts have these.
-        // =================================================
+                    row.innerHTML = `
 
-        const editButtons =
-            mercenaryList.querySelectorAll(
-                ".edit-contact-button"
-            );
+                        <td>
+
+                            <div class="mercenary-identity">
+
+                                <img
+                                    src="${classImage}"
+                                    alt="${escapeHtml(
+                                        mercenary.MercenaryClass ||
+                                        "Mercenary"
+                                    )}"
+                                    class="class-avatar"
+                                >
+
+                                <div class="mercenary-identity-text">
+
+                                    <strong>
+                                        ${escapeHtml(
+                                            username
+                                        )}
+                                    </strong>
+
+                                    <span>
+                                        ${escapeHtml(
+                                            mercenary.MercenaryClass ||
+                                            "No Class"
+                                        )}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </td>
 
 
-        editButtons.forEach(
-            function (button) {
-
-                button.addEventListener(
-                    "click",
-                    function () {
-
-                        const contactId =
-                            Number(
-                                button.dataset
-                                    .contactId
-                            );
+                        <td>
+                            ${escapeHtml(
+                                displayName
+                            )}
+                        </td>
 
 
-                        const contact =
-                            allMercenaries.find(
-                                function (
-                                    mercenary
-                                ) {
+                        <td>
+                            ${escapeHtml(
+                                mercenary.MercenaryClass ||
+                                "No Class"
+                            )}
+                        </td>
 
-                                    return (
-                                        mercenary.SourceType ===
-                                            "manual" &&
-                                        Number(
+
+                        <td>
+                            ${escapeHtml(
+                                getRankName(
+                                    mercenary.MercenaryRank
+                                )
+                            )}
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="
+                                    status
+                                    ${statusClass}
+                                "
+                            >
+                                ${statusText}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+                            ${escapeHtml(
+                                gameModeText
+                            )}
+                        </td>
+
+
+                        <td>
+
+                            <div class="mercenary-actions">
+
+                                ${manualButtons}
+
+                                <button
+                                    type="button"
+                                    class="remove-button"
+
+                                    data-source-type="${
+                                        mercenary.SourceType ||
+                                        (
                                             mercenary.ContactID
-                                        ) ===
-                                            contactId
-                                    );
-                                }
-                            );
+                                                ? "manual"
+                                                : "registered"
+                                        )
+                                    }"
+
+                                    data-mercenary-id="${
+                                        mercenary.MercenaryID ||
+                                        ""
+                                    }"
+
+                                    data-contact-id="${
+                                        mercenary.ContactID ||
+                                        ""
+                                    }"
+                                >
+                                    Remove
+                                </button>
+
+                            </div>
+
+                        </td>
+                    `;
 
 
-                        if (!contact) {
-                            return;
-                        }
-
-
-                        setEditMode(
-                            contact
-                        );
-                    }
-                );
-            }
-        );
-
-
-        // =================================================
-        // REMOVE BUTTONS
-        // =================================================
-
-        const removeButtons =
-            mercenaryList.querySelectorAll(
-                ".remove-button"
+                    mercenaryList.appendChild(
+                        row
+                    );
+                }
             );
 
 
-        removeButtons.forEach(
-            function (button) {
-
-                button.addEventListener(
-                    "click",
-                    function () {
-
-                        const sourceType =
-                            button.dataset
-                                .sourceType;
+            setupMercenaryButtons(
+                mercenaryList
+            );
+        }
 
 
-                        const mercenaryId =
-                            Number(
-                                button.dataset
-                                    .mercenaryId
-                            );
+        // =================================================
+        // TABLE BUTTONS
+        // =================================================
 
+        function setupMercenaryButtons(
+            mercenaryList
+        ) {
 
-                        const contactId =
-                            Number(
-                                button.dataset
-                                    .contactId
-                            );
+            // INFO
 
-
-                        if (
-                            sourceType ===
-                                "manual" ||
-                            contactId > 0
-                        ) {
-
-                            removeManualMercenary(
-                                contactId
-                            );
-
-                        } else {
-
-                            removeRegisteredMercenary(
-                                mercenaryId
-                            );
-                        }
-                    }
-                );
-            }
-        );
-    }
-
-
-    // Close info bubbles when clicking elsewhere
-    document.addEventListener(
-        "click",
-        function () {
-
-            document
+            mercenaryList
                 .querySelectorAll(
-                    ".contact-info-bubble"
+                    ".info-button"
                 )
                 .forEach(
-                    function (bubble) {
+                    function (
+                        button
+                    ) {
 
-                        bubble.classList.add(
-                            "hidden"
+                        button.addEventListener(
+                            "click",
+                            function (
+                                event
+                            ) {
+
+                                event.stopPropagation();
+
+
+                                const actions =
+                                    button.closest(
+                                        ".mercenary-actions"
+                                    );
+
+                                const bubble =
+                                    actions.querySelector(
+                                        ".contact-info-bubble"
+                                    );
+
+
+                                document
+                                    .querySelectorAll(
+                                        ".contact-info-bubble"
+                                    )
+                                    .forEach(
+                                        function (
+                                            otherBubble
+                                        ) {
+
+                                            if (
+                                                otherBubble !==
+                                                bubble
+                                            ) {
+
+                                                otherBubble
+                                                    .classList
+                                                    .add(
+                                                        "hidden"
+                                                    );
+                                            }
+                                        }
+                                    );
+
+
+                                bubble
+                                    .classList
+                                    .toggle(
+                                        "hidden"
+                                    );
+                            }
+                        );
+                    }
+                );
+
+
+            // EDIT
+
+            mercenaryList
+                .querySelectorAll(
+                    ".edit-contact-button"
+                )
+                .forEach(
+                    function (
+                        button
+                    ) {
+
+                        button.addEventListener(
+                            "click",
+                            function () {
+
+                                const contactId =
+                                    Number(
+                                        button
+                                            .dataset
+                                            .contactId
+                                    );
+
+
+                                const contact =
+                                    allMercenaries.find(
+                                        function (
+                                            mercenary
+                                        ) {
+
+                                            return (
+                                                mercenary.SourceType ===
+                                                    "manual" &&
+                                                Number(
+                                                    mercenary.ContactID
+                                                ) ===
+                                                    contactId
+                                            );
+                                        }
+                                    );
+
+
+                                if (contact) {
+
+                                    setEditMode(
+                                        contact
+                                    );
+                                }
+                            }
+                        );
+                    }
+                );
+
+
+            // REMOVE
+
+            mercenaryList
+                .querySelectorAll(
+                    ".remove-button"
+                )
+                .forEach(
+                    function (
+                        button
+                    ) {
+
+                        button.addEventListener(
+                            "click",
+                            function () {
+
+                                const sourceType =
+                                    button
+                                        .dataset
+                                        .sourceType;
+
+
+                                const mercenaryId =
+                                    Number(
+                                        button
+                                            .dataset
+                                            .mercenaryId
+                                    );
+
+
+                                const contactId =
+                                    Number(
+                                        button
+                                            .dataset
+                                            .contactId
+                                    );
+
+
+                                if (
+                                    sourceType ===
+                                        "manual" ||
+                                    contactId > 0
+                                ) {
+
+                                    removeManualMercenary(
+                                        contactId
+                                    );
+
+                                } else {
+
+                                    removeRegisteredMercenary(
+                                        mercenaryId
+                                    );
+                                }
+                            }
                         );
                     }
                 );
         }
-    );
 
 
-    // =====================================================
-    // REMOVE REGISTERED MERCENARY
-    // =====================================================
+        // Close info bubbles
 
-    async function removeRegisteredMercenary(
-        mercenaryId
-    ) {
+        document.addEventListener(
+            "click",
+            function () {
 
-        if (!mercenaryId) {
-            return;
-        }
+                document
+                    .querySelectorAll(
+                        ".contact-info-bubble"
+                    )
+                    .forEach(
+                        function (
+                            bubble
+                        ) {
 
-
-        try {
-
-            const response = await fetch(
-                `${API_BASE_URL}/mercenaries/mercenaries.php`,
-                {
-                    method: "DELETE",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        userId:
-                            Number(userId),
-
-                        mercenaryId:
-                            Number(mercenaryId)
-                    })
-                }
-            );
-
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                alert(
-                    data.error ||
-                    "Unable to remove mercenary."
-                );
-
-                return;
+                            bubble
+                                .classList
+                                .add(
+                                    "hidden"
+                                );
+                        }
+                    );
             }
-
-
-            loadMercenaries();
-
-
-        } catch (error) {
-
-            console.error(error);
-
-            alert(
-                "Unable to connect to the server."
-            );
-        }
-    }
-
-
-    // =====================================================
-    // REMOVE MANUAL MERCENARY
-    // =====================================================
-
-    async function removeManualMercenary(
-        contactId
-    ) {
-
-        if (!contactId) {
-            return;
-        }
-
-
-        try {
-
-            const response = await fetch(
-                `${API_BASE_URL}/contacts/manual-contacts.php`,
-                {
-                    method: "DELETE",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        userId:
-                            Number(userId),
-
-                        contactId:
-                            Number(contactId)
-                    })
-                }
-            );
-
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                alert(
-                    data.error ||
-                    "Unable to remove contact."
-                );
-
-                return;
-            }
-
-
-            loadMercenaries();
-
-
-        } catch (error) {
-
-            console.error(error);
-
-            alert(
-                "Unable to connect to the server."
-            );
-        }
-    }
-
-
-    // =====================================================
-    // RANK NAMES
-    // =====================================================
-
-    function getRankName(rank) {
-
-        const ranks = {
-
-            1: "Mercenary I",
-            2: "Mercenary II",
-            3: "Mercenary III",
-
-            4: "Contract Killer I",
-            5: "Contract Killer II",
-            6: "Contract Killer III",
-
-            7: "Executioner I",
-            8: "Executioner II",
-            9: "Executioner III",
-
-            10: "Expert Assassin I",
-            11: "Expert Assassin II",
-            12: "Expert Assassin III",
-
-            13: "Death Merchant"
-        };
-
-
-        return (
-            ranks[Number(rank)] ||
-            "Unranked"
         );
-    }
 
 
-    // =====================================================
-    // LOOKING FOR STATUS TEXT
-    // =====================================================
+        // =================================================
+        // REMOVE REGISTERED MERCENARY
+        // =================================================
 
-    function getLookingForText(user) {
-
-        if (
-            Number(
-                user.LookingFor
-            ) === 1 &&
-            user.GameMode
+        async function removeRegisteredMercenary(
+            mercenaryId
         ) {
+
+            if (!mercenaryId) {
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE_URL}/mercenaries/mercenaries.php`,
+                        {
+                            method:
+                                "DELETE",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    userId:
+                                        Number(userId),
+
+                                    mercenaryId:
+                                        Number(
+                                            mercenaryId
+                                        )
+                                })
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    alert(
+                        data.error ||
+                        "Unable to remove mercenary."
+                    );
+
+                    return;
+                }
+
+
+                loadMercenaries();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "Unable to connect to the server."
+                );
+            }
+        }
+
+
+        // =================================================
+        // REMOVE MANUAL MERCENARY
+        // =================================================
+
+        async function removeManualMercenary(
+            contactId
+        ) {
+
+            if (!contactId) {
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE_URL}/contacts/manual-contacts.php`,
+                        {
+                            method:
+                                "DELETE",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    userId:
+                                        Number(userId),
+
+                                    contactId:
+                                        Number(
+                                            contactId
+                                        )
+                                })
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    alert(
+                        data.error ||
+                        "Unable to remove contact."
+                    );
+
+                    return;
+                }
+
+
+                loadMercenaries();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "Unable to connect to the server."
+                );
+            }
+        }
+
+
+        // =================================================
+        // RANK NAMES
+        // =================================================
+
+        function getRankName(
+            rank
+        ) {
+
+            const ranks = {
+
+                1:
+                    "Mercenary I",
+
+                2:
+                    "Mercenary II",
+
+                3:
+                    "Mercenary III",
+
+                4:
+                    "Contract Killer I",
+
+                5:
+                    "Contract Killer II",
+
+                6:
+                    "Contract Killer III",
+
+                7:
+                    "Executioner I",
+
+                8:
+                    "Executioner II",
+
+                9:
+                    "Executioner III",
+
+                10:
+                    "Expert Assassin I",
+
+                11:
+                    "Expert Assassin II",
+
+                12:
+                    "Expert Assassin III",
+
+                13:
+                    "Death Merchant"
+            };
+
+
+            return (
+                ranks[
+                    Number(rank)
+                ] ||
+                "Unranked"
+            );
+        }
+
+
+        // =================================================
+        // LOOKING FOR TEXT
+        // =================================================
+
+        function getLookingForText(
+            user
+        ) {
+
+            if (
+                Number(
+                    user.LookingFor
+                ) === 1 &&
+                user.GameMode
+            ) {
+
+                return `
+                    <p class="looking-for">
+                        Looking For:
+                        ${escapeHtml(
+                            user.GameMode
+                        )}
+                    </p>
+                `;
+            }
+
 
             return `
                 <p class="looking-for">
-                    Looking For:
-                    ${escapeHtml(
-                        user.GameMode
-                    )}
+                    Not looking for a game
                 </p>
             `;
         }
 
 
-        return `
-            <p class="looking-for">
-                Not looking for a game
-            </p>
-        `;
+        // =================================================
+        // ESCAPE HTML
+        // =================================================
+
+        function escapeHtml(
+            value
+        ) {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+            div.textContent =
+                String(
+                    value ?? ""
+                );
+
+            return div.innerHTML;
+        }
+
+
+        // =================================================
+        // INITIAL LOAD
+        // =================================================
+
+        loadMercenaries();
     }
-
-
-    // =====================================================
-    // ESCAPE HTML
-    // =====================================================
-
-    function escapeHtml(value) {
-
-        const div =
-            document.createElement(
-                "div"
-            );
-
-        div.textContent =
-            String(value ?? "");
-
-        return div.innerHTML;
-    }
-
-
-    // =====================================================
-    // INITIAL LOAD
-    // =====================================================
-
-    loadMercenaries();
-
-});
+);
