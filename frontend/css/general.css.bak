@@ -1,0 +1,609 @@
+/* =====================================================
+   MERC MANN - GENERAL STYLES
+   TF2 INSPIRED UI
+   ===================================================== */
+
+
+/* =====================================================
+   FALLBACK WEB FONT
+
+   TF2 Build is our preferred display font.
+   If the browser does not have it, Oswald is used.
+   ===================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap");
+
+
+/* =====================================================
+   COLORS + FONTS
+   ===================================================== */
+
+:root {
+
+    /* =====================
+       BLU
+       ===================== */
+
+    --blu-dark: #395c78;
+    --blu: #5b7a8c;
+    --blu-light: #768a88;
+
+
+    /* =====================
+       NEUTRAL
+       ===================== */
+
+    --gray: #6b6a65;
+
+    --brown-dark: #34302d;
+    --brown: #462d26;
+    --brown-light: #6a4535;
+
+
+    /* =====================
+       RED
+       ===================== */
+
+    --red-dark: #913a1e;
+    --red: #bd3b3b;
+    --red-deep: #9d312f;
+
+
+    /* =====================
+       ORANGE
+       ===================== */
+
+    --orange: #f08149;
+    --orange-light: #ef9849;
+
+
+    /* =====================
+       LIGHT COLORS
+       ===================== */
+
+    --peach: #f5ad87;
+    --tan-light: #f6b98a;
+    --cream: #f5e7de;
+    --tan: #c1a18a;
+    --beige: #dabdab;
+
+
+    /* =====================
+       FONTS
+
+       Main:
+       TF2 Build
+
+       Secondary:
+       TF2 Secondary
+       ===================== */
+
+    --font-display:
+        "TF2 Build",
+        "Oswald",
+        Impact,
+        sans-serif;
+
+    --font-body:
+        "TF2 Secondary",
+        "Trebuchet MS",
+        Verdana,
+        Geneva,
+        sans-serif;
+}
+
+
+/* =====================================================
+   RESET
+   ===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+
+    margin: 0;
+    padding: 0;
+
+    font-family: var(--font-body);
+
+    color: var(--cream);
+
+    background:
+        radial-gradient(
+            circle at top,
+            var(--brown-light) 0%,
+            var(--brown) 35%,
+            var(--brown-dark) 100%
+        );
+}
+
+
+/* =====================================================
+   TEXT
+   ===================================================== */
+
+p,
+label,
+input,
+select,
+textarea,
+td {
+    font-family: var(--font-body);
+}
+
+
+/* =====================================================
+   HEADINGS
+   ===================================================== */
+
+h1,
+h2,
+h3,
+h4,
+th,
+strong {
+    font-family: var(--font-display);
+
+    font-weight: 700;
+
+    letter-spacing: 0.04em;
+}
+
+
+/* Main title */
+
+h1 {
+    color: var(--cream);
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.07em;
+
+    text-shadow:
+        2px 2px 0 var(--brown-dark);
+}
+
+
+/* Section title */
+
+h2 {
+    color: var(--tan-light);
+
+    text-transform: uppercase;
+}
+
+
+/* Smaller title */
+
+h3 {
+    color: var(--beige);
+}
+
+
+/* =====================================================
+   LINKS
+   ===================================================== */
+
+a {
+    color: var(--orange-light);
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        color 0.15s ease,
+        text-shadow 0.15s ease;
+}
+
+
+a:hover {
+    color: var(--cream);
+
+    text-shadow:
+        0 0 5px rgba(240, 129, 73, 0.55);
+}
+
+
+/* =====================================================
+   FORM ELEMENTS
+   ===================================================== */
+
+button,
+input,
+select,
+textarea {
+    font-family: var(--font-body);
+
+    font-size: 1rem;
+}
+
+
+/* Input fields */
+
+input,
+select,
+textarea {
+    width: 100%;
+
+    padding: 11px 13px;
+
+    color: var(--cream);
+
+    background-color: var(--brown-dark);
+
+    border:
+        2px solid
+        var(--gray);
+
+    border-radius: 5px;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        background-color 0.15s ease;
+}
+
+
+/* Dropdown options */
+
+select option {
+    color: var(--cream);
+
+    background-color: var(--brown-dark);
+}
+
+
+/* Placeholder text */
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--tan);
+
+    opacity: 0.8;
+}
+
+
+/* Focus */
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+
+    background-color: #3b3734;
+
+    border-color: var(--orange);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(240, 129, 73, 0.22);
+}
+
+
+/* =====================================================
+   BUTTONS
+   ===================================================== */
+
+button,
+.primary-button {
+    padding: 11px 22px;
+
+    font-family: var(--font-display);
+
+    font-size: 1rem;
+    font-weight: 700;
+
+    letter-spacing: 0.05em;
+
+    text-transform: uppercase;
+
+    color: var(--cream);
+
+    /*
+       Dark RED gives us significantly
+       stronger contrast than orange.
+    */
+
+    background-color: var(--red-dark);
+
+    border:
+        2px solid
+        var(--brown-dark);
+
+    border-radius: 5px;
+
+    box-shadow:
+        0 3px 0
+        var(--brown-dark);
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.12s ease,
+        box-shadow 0.12s ease;
+}
+
+
+/* Primary hover */
+
+button:hover,
+.primary-button:hover {
+    background-color: var(--red);
+
+    border-color: var(--peach);
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 4px 0
+        var(--brown-dark);
+}
+
+
+/* Primary click */
+
+button:active,
+.primary-button:active {
+    background-color: var(--red-deep);
+
+    transform:
+        translateY(2px);
+
+    box-shadow:
+        0 1px 0
+        var(--brown-dark);
+}
+
+
+/* Keyboard accessibility */
+
+button:focus-visible,
+.primary-button:focus-visible {
+    outline:
+        3px solid
+        var(--orange-light);
+
+    outline-offset: 3px;
+}
+
+
+/* =====================================================
+   BLU / SECONDARY BUTTON
+   ===================================================== */
+
+.secondary-button {
+    color: var(--cream);
+
+    background-color: var(--blu-dark);
+
+    border-color: #293f50;
+
+    box-shadow:
+        0 3px 0 #293f50;
+}
+
+
+.secondary-button:hover {
+    background-color: var(--blu);
+
+    border-color: var(--blu-light);
+}
+
+
+.secondary-button:active {
+    background-color: var(--blu-dark);
+
+    box-shadow:
+        0 1px 0 #293f50;
+}
+
+
+/* =====================================================
+   DANGER BUTTON
+   ===================================================== */
+
+.danger-button {
+    color: var(--cream);
+
+    background-color: var(--red-deep);
+
+    border-color: var(--brown-dark);
+}
+
+
+.danger-button:hover {
+    background-color: var(--red);
+
+    border-color: var(--peach);
+}
+
+
+/* =====================================================
+   PANELS / CARDS
+
+   Can be used by the individual page styles.
+   ===================================================== */
+
+.panel,
+.card {
+    color: var(--cream);
+
+    background-color:
+        rgba(52, 48, 45, 0.92);
+
+    border:
+        2px solid
+        var(--gray);
+
+    border-radius: 8px;
+
+    box-shadow:
+        0 5px 12px
+        rgba(0, 0, 0, 0.25);
+}
+
+
+/* =====================================================
+   LOGO
+   ===================================================== */
+
+.logo {
+    height: 95px;
+    width: auto;
+
+    object-fit: contain;
+
+    filter:
+        drop-shadow(
+            0 3px 3px
+            rgba(0, 0, 0, 0.4)
+        );
+}
+
+
+/* =====================================================
+   TABLES
+   ===================================================== */
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    color: var(--cream);
+
+    background-color:
+        rgba(52, 48, 45, 0.65);
+}
+
+
+/* Header */
+
+th {
+    padding: 12px;
+
+    color: var(--cream);
+
+    background-color: var(--blu-dark);
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.04em;
+}
+
+
+/* Cells */
+
+td {
+    padding: 11px 12px;
+
+    border-bottom:
+        1px solid
+        var(--gray);
+}
+
+
+/* Row hover */
+
+tbody tr:hover {
+    background-color:
+        rgba(91, 122, 140, 0.18);
+}
+
+
+/* =====================================================
+   STATUS / ACCENT COLORS
+   ===================================================== */
+
+.accent {
+    color: var(--orange);
+}
+
+
+.blu-text {
+    color: var(--blu-light);
+}
+
+
+.red-text {
+    color: var(--peach);
+}
+
+
+/* =====================================================
+   ERRORS
+   ===================================================== */
+
+.error-message {
+    color: var(--peach);
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   SUCCESS
+   ===================================================== */
+
+.success-message {
+    color: var(--beige);
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   SELECTION
+   ===================================================== */
+
+::selection {
+    color: var(--cream);
+
+    background-color: var(--red-dark);
+}
+
+
+/* =====================================================
+   SCROLLBAR
+   ===================================================== */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+
+::-webkit-scrollbar-track {
+    background: var(--brown-dark);
+}
+
+
+::-webkit-scrollbar-thumb {
+    background: var(--gray);
+
+    border-radius: 5px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--blu);
+}
+
+
+/* =====================================================
+   UTILITY
+   ===================================================== */
+
+.clearfix {
+    clear: both;
+}
